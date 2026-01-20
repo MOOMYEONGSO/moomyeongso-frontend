@@ -2,9 +2,13 @@ import type { ApiResponse } from "../../../api/types";
 
 export type DiaryType = "SHORT" | "LONG" | "TODAY";
 
-export type CreateDiaryRequest = {
+export type PostBody = {
   title: string;
   content: string;
+};
+
+
+export type CreateDiaryRequest = PostBody & {
   type: DiaryType;
   tags: string[];
 };
