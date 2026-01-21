@@ -36,9 +36,9 @@ const router = createBrowserRouter([
       {
         element: <AdminRoute />,
         children: [
-          { path: "/admin/diaries", element: <AdminDiaryListPage /> },
-          { path: "/admin/diaries/:type", element: <AdminDiaryListPage /> },
-          { path: "/admin/diaries/post/:id", element: <AdminDiaryDetailPage /> },
+          { path: PATHS.ADMIN_DIARIES, element: <AdminDiaryListPage />,},
+          { path: `${PATHS.ADMIN_DIARIES}/:type`, element: <AdminDiaryListPage />,},
+          { path: `${PATHS.ADMIN_DIARIES}/post/:id`, element: <AdminDiaryDetailPage />,},
         ],
       },
       {
