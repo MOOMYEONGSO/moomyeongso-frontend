@@ -13,8 +13,11 @@ import FeedbackPage from "../features/feedback/pages/FeedbackPage";
 import NotFoundPage from "../features/error/pages/NotFoundPage";
 import ErrorPage from "../features/error/pages/ErrorPage";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminRoute from "./AdminRoute";
 import { PATHS } from "../constants/path";
 import DiaryStreakPage from "../features/diary/pages/DiaryStreakPage";
+import AdminDiaryListPage from "../features/admin/pages/diary/AdminDiaryListPage";
+import AdminDiaryDetailPage from "../features/admin/pages/diary/AdminDiaryDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +34,17 @@ const router = createBrowserRouter([
       { path: PATHS.NICKNAME, element: <SetNicknamePage /> },
 
       {
+        element: <AdminRoute />,
+        children: [
+          { path: "/admin/diaries", element: <AdminDiaryListPage /> },
+          { path: "/admin/diaries/:type", element: <AdminDiaryListPage /> },
+          { path: "/admin/diaries/post/:id", element: <AdminDiaryDetailPage /> },
+        ],
+      },
+      {
         element: <ProtectedRoute />,
-        children: [{ path: PATHS.PROFILE, element: <ProfilePage /> }],
+        children: [
+          { path: PATHS.PROFILE, element: <ProfilePage /> }],
       },
     ],
   },

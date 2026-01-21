@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import CardListContainer from "../../../diary/components/card/CardListContainer";
 import classes from "../../../diary/pages/DiaryListPage.module.css";
 import type { UiType } from "../../../diary/types/typeMap";
@@ -7,8 +7,10 @@ import { InlineError } from "../../../../components/status/InlineStates";
 import Paragraph from "../../../../components/paragraph/Paragraph";
 import { useAdminDiaries } from "../../hooks/useAdminDiaries";
 import { toAppError } from "../../../../api/errors";
+import type { DiaryPreview } from "../../../diary/types/types";
 
 function AdminDiaryListPage() {
+  const navigate = useNavigate();
   const { type } = useParams<{ type?: UiType }>();
 
   let apiType: "SHORT" | "LONG" | "TODAY" | undefined;
@@ -43,10 +45,19 @@ function AdminDiaryListPage() {
     );
   }
 
-  const diaries = data ?? [];
-  const coin = 0; 
-  const isEmpty = !isLoading && diaries.length === 0;
 
+const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
+    postId: p.postId,
+    userId: p.userId,
+    title: p.title,
+    contentPreview: p.content ? p.content.slice(0, 100) : "",
+    contentLength: p.content ? p.content.length : 0,
+    likes: p.likes,
+    views: p.views,
+    createdAt: p.createdAt,
+}));
+
+const isEmpty = !isLoading && diaries.length === 0;
   return (
     <div className={classes.list}>
       <div className={classes.guide} role="note" aria-live="polite">
@@ -56,11 +67,12 @@ function AdminDiaryListPage() {
 
       <CardListContainer
         diaries={diaries}
-        coin={coin}
+        coin={0}
         isLoading={isLoading}
         isEmpty={isEmpty}
         type={type}
         emptyMessage="아직 등록된 글이 없어요"
+        onClickCardOverride={(id) => navigate(`/admin/diaries/post/${id}`)}
       />
     </div>
   );

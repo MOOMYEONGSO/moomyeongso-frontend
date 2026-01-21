@@ -4,15 +4,25 @@ import Button from "../button/Button";
 import Logo from "../logo/Logo";
 import classes from "./Header.module.css";
 import { PATHS } from "../../constants/path";
-import { isAuthenticatedUser } from "../../features/auth/api/tokenStore";
+import {
+  isAuthenticatedUser,
+  isAdminUser,
+} from "../../features/auth/api/tokenStore";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loggedIn, setLoggedIn] = useState<boolean>(isAuthenticatedUser());
+  const [isAdmin, setIsAdmin] = useState<boolean>(
+    loggedIn ? isAdminUser() : false
+  );
 
   useEffect(() => {
-    const update = () => setLoggedIn(isAuthenticatedUser());
+    const update = () => {
+      const authed = isAuthenticatedUser();
+      setLoggedIn(authed);
+      setIsAdmin(authed ? isAdminUser() : false);
+    };
     window.addEventListener("auth:update", update);
     return () => window.removeEventListener("auth:update", update);
   }, []);
@@ -20,6 +30,11 @@ const Header = () => {
   function handleProfile() {
     navigate(PATHS.PROFILE);
   }
+  
+  function handleAdmin() {
+    navigate("/admin/diaries");
+  }
+
 
   const hiddenPaths = [
     PATHS.LOGIN,
@@ -38,6 +53,11 @@ const Header = () => {
       {!shouldHideButton &&
         (loggedIn ? (
           <div className={classes.userArea}>
+            {isAdmin && (
+              <Button alwaysHoverStyle onClick={handleAdmin}>
+                관리자
+              </Button>
+            )}
             <Button alwaysHoverStyle onClick={handleProfile}>
               마이페이지
             </Button>

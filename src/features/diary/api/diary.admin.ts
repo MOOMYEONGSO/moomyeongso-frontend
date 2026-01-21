@@ -1,30 +1,34 @@
 import client from "../../../api/client";
-import type {
-  DiaryDetail,
-  DiaryPreview,
-  DiaryType,
-  PostBody,
-} from "../types/types";
+import type { DiaryType } from "../types/types";
+
+export type AdminPostResponse = {
+  postId: string;
+  title: string;
+  content: string;
+  userId: string;
+  type: DiaryType; 
+  isDeleted: boolean;
+  views: number;
+  likes: number;
+  createdAt: string;
+};
+
+export type AdminPostDetailResponse = AdminPostResponse;
 
 export const adminDiaryApi = {
-  async getAll(type?: DiaryType): Promise<DiaryPreview[]> {
-    const res = await client.get<DiaryPreview[]>("/admin/posts", {
+  async getAll(type?: DiaryType): Promise<AdminPostResponse[]> {
+    const res = await client.get<AdminPostResponse[]>("/admin/posts", {
       params: type ? { type } : undefined,
     });
     return res.data;
   },
 
-  async getById(id: string): Promise<DiaryDetail> {
-    const res = await client.get<DiaryDetail>(`/admin/posts/${id}`);
+  async getById(postId: string): Promise<AdminPostDetailResponse> {
+    const res = await client.get<AdminPostDetailResponse>(`/admin/posts/${postId}`);
     return res.data;
   },
 
-  async update(id: string, body: PostBody): Promise<void> {
-    await client.patch(`/admin/posts/${id}`, body);
+  async remove(postId: string): Promise<void> {
+    await client.delete(`/admin/posts/${postId}`);
   },
-
-  async remove(id: string): Promise<void> {
-    await client.delete(`/admin/posts/${id}`);
-  },
-
 };
