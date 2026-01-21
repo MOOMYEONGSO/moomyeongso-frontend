@@ -1,17 +1,6 @@
 import client from "../../../api/client";
 import type { DiaryType } from "../types/types";
-
-export type AdminPostResponse = {
-  postId: string;
-  title: string;
-  content: string;
-  userId: string;
-  type: DiaryType; 
-  isDeleted: boolean;
-  views: number;
-  likes: number;
-  createdAt: string;
-};
+import type { AdminPostResponse} from "../../admin/types/adminPost";
 
 export type AdminPostDetailResponse = AdminPostResponse;
 
