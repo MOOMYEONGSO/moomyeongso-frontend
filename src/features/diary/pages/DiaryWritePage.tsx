@@ -231,7 +231,7 @@ function DiaryWritePage() {
           }
           disabled={submitting}
         />
-        <Modal.Textarea
+        {/* <Modal.Textarea
           name="tags"
           placeholder="쉼표(,)로 구분하여 태그를 입력해주세요."
           value={tags}
@@ -239,7 +239,7 @@ function DiaryWritePage() {
             setTags(e.target.value)
           }
           disabled={submitting}
-        />
+        /> */}
         <Modal.Actions>
           <Button
             type="button"
