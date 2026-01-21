@@ -10,8 +10,8 @@ import { useAdminDiary } from "../../hooks/useAdminDiary";
 import { toAppError } from "../../../../api/errors";
 import Button from "../../../../components/button/Button";
 import Modal from "../../../../components/modal/Modal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminDiaryApi } from "../../../diary/api/diary.admin";
+import { PATHS } from "../../../../constants/path";
+import { useAdminDiaryDelete } from "../../hooks/useAdminDiaryDelete";
 
 function DetailContent({
   content,
@@ -59,25 +59,14 @@ function DetailContent({
 export default function AdminDiaryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error, refetch } = useAdminDiary(id);
   const [retrying, setRetrying] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
 
-  const deleteMutation = useMutation({
-    mutationFn: (postId: string) => adminDiaryApi.remove(postId),
-    onSuccess: async () => {
-      setDeleteOpen(false);
+  const deleteMutation = useAdminDiaryDelete();
 
-      // admin 쪽 리스트/상세 관련 캐시 전체 갱신 (가장 안전)
-      await queryClient.invalidateQueries({ queryKey: ["admin", "diary"] });
-
-      navigate("/admin/diaries", { replace: true });
-    },
-  });
-
-  if (!id) return <Navigate to="/admin/diaries" replace />;
+  if (!id) return <Navigate to={PATHS.ADMIN_DIARIES} replace />;
 
   if (isError) {
     return (
@@ -156,7 +145,12 @@ export default function AdminDiaryDetailPage() {
             type="button"
             onClick={() => {
               if (!id) return;
-              deleteMutation.mutate(id);
+              deleteMutation.mutate(id, {
+                onSuccess: () => {
+                  setDeleteOpen(false);
+                  navigate(PATHS.ADMIN_DIARIES, { replace: true });
+                },
+              });
             }}
             disabled={deleteMutation.isPending}
           >
