@@ -98,21 +98,14 @@ export default function AdminDiaryDetailPage() {
         isLoading={isLoading}
         createdLabel={createdLabel}
         actions={
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              paddingBottom: 24,
-            }}
-          >
+          <div className={classes.buttonContainer}>
             <Button
               type="button"
               alwaysHoverStyle
               variant="main"
               state="default"
               onClick={() => setDeleteOpen(true)}
-              disabled={deleteMutation.isPending}
-            >
+              disabled={deleteMutation.isPending}>
               삭제
             </Button>
           </div>
@@ -128,7 +121,7 @@ export default function AdminDiaryDetailPage() {
         aria-labelledby="admin-delete-title"
       >
         <Modal.Title id="admin-delete-title">
-          <>이 게시글을 삭제할까요? 삭제 후에는 복구할 수 없습니다.</>
+          이 게시글을 삭제할까요?
         </Modal.Title>
         <Modal.Actions>
           <Button
