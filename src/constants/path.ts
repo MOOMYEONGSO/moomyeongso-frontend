@@ -7,12 +7,16 @@ export const PATHS = {
   DIARY_DETAIL: "/diary/v/:id",
   DIARY_STREAK: "/diary/streak/:type",
   LOGIN: "/login",
+  ADMIN_DIARIES: "/admin/diaries",
   SIGN_UP: "/signup",
   NICKNAME: "/signup/nickname",
   ERROR: "/error",
   PROFILE: "/profile",
   FEEDBACK: "/feedback",
 
+  ADMIN_DIARIES_BY_TYPE: (type: string) => `/admin/diaries/${type}`,
+  ADMIN_DIARY_DETAIL: (postId: string) =>
+    `/admin/diaries/post/${postId}`,
   DIARY_LIST_TYPE: (type: "today" | "daily" | "mind") => `/diary/${type}`,
   DIARY_SUBMIT_TYPE: (type: "today" | "daily" | "mind") =>
     `/diary/submit/${type}`,

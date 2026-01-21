@@ -1,0 +1,23 @@
+import client from "../../../api/client";
+import type { DiaryType } from "../types/types";
+import type { AdminPostResponse} from "../../admin/types/adminPost";
+
+export type AdminPostDetailResponse = AdminPostResponse;
+
+export const adminDiaryApi = {
+  async getAll(type?: DiaryType): Promise<AdminPostResponse[]> {
+    const res = await client.get<AdminPostResponse[]>("/admin/posts", {
+      params: type ? { type } : undefined,
+    });
+    return res.data;
+  },
+
+  async getById(postId: string): Promise<AdminPostDetailResponse> {
+    const res = await client.get<AdminPostDetailResponse>(`/admin/posts/${postId}`);
+    return res.data;
+  },
+
+  async remove(postId: string): Promise<void> {
+    await client.delete(`/admin/posts/${postId}`);
+  },
+};
