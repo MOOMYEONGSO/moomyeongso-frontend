@@ -33,13 +33,14 @@ const isContentValid = (s: string, minLength: number) =>
 function DiaryWritePage() {
   const formRef = useRef<FormHandle>(null);
   const containerRef = useRef<HTMLElement>(null);
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+
   const [count, setCount] = useState(0);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showTagSelect, setShowTagSelect] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [title, setTitle] = useState("");
 
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -50,12 +51,13 @@ function DiaryWritePage() {
 
   const isToday = type === "today";
 
+  // 오늘의 주제 글인 경우, 주제 API 호출
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
 
   const MIN_LENGTH = diaryType === "LONG" ? LONG_MIN_LENGTH : SHORT_MIN_LENGTH;
 
   //
-  const parsedTags = tags ? [tags] : [];
+  const parsedTags = tags;
 
   //태그 숫자 제한 및 파싱
   /* const MAX_TAGS = 10;
@@ -84,17 +86,19 @@ function DiaryWritePage() {
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
       : "이곳 무명소는 고해성사를 담는 장소입니다. 말하지 못한 속마음을 조용히 흘려보내세요.";
 
+  // API 호출
   const { mutateAsync } = useCreateDiary(diaryType, {
     onSuccess: (data) => {
       formRef.current?.clear();
       setTitle("");
       setContent("");
-      setTags("");
+      setTags([]);
       setCount(0);
       localStorage.removeItem(DRAFT_KEY);
 
       const typeLower = API_TO_UI[diaryType];
 
+      // 제출 완료 페이지로 이동
       navigate(PATHS.DIARY_SUBMIT_TYPE(typeLower), {
         replace: true,
         state: {
@@ -128,7 +132,7 @@ function DiaryWritePage() {
             setContent(parsed.content);
             setCount(parsed.content.length);
           }
-          if ("tags" in parsed && typeof parsed.tags === "string") {
+          if ("tags" in parsed && Array.isArray(parsed.tags)) {
             setTags(parsed.tags);
           }
         }
@@ -138,6 +142,9 @@ function DiaryWritePage() {
     }
   }, []);
 
+  // ==============================
+  // 임시 저장 (입력 중 자동 저장)
+  // ==============================
   useEffect(() => {
     const id = setTimeout(() => {
       try {
@@ -154,6 +161,7 @@ function DiaryWritePage() {
 
   const canSubmit = isContentValid(content, MIN_LENGTH);
 
+  // 최종 저장 핸들러
   async function handleSave() {
     if (submitting) return;
 
@@ -241,8 +249,16 @@ function DiaryWritePage() {
               title={option.title}
               subtitle={option.subtitle}
               image={option.image}
-              isSelected={tags === option.id}
-              onClick={() => setTags(option.id)}
+              isSelected={tags.includes(option.id)}
+              onClick={() => {
+                if (tags.includes(option.id)) {
+                  setTags(tags.filter((t) => t !== option.id));
+                } else if (tags.length < 2) {
+                  setTags([...tags, option.id]);
+                } else {
+                  setTags([tags[0], option.id]);
+                }
+              }}
             />
           ))}
         </div>
@@ -261,7 +277,7 @@ function DiaryWritePage() {
             alwaysHoverStyle
             variant="main"
             state="default"
-            disabled={!tags}
+            disabled={tags.length === 0}
             onClick={() => {
               setShowTagSelect(false);
               setShowConfirm(true);
