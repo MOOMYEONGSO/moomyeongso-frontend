@@ -78,7 +78,7 @@ const isEmpty = !isLoading && diaries.length === 0;
       <div className={classes.guide} role="note" aria-live="polite">
         <Paragraph>오늘의 무명소</Paragraph>
 
-        <div style={{ marginTop: 12 }}>
+        <div className={classes.metricsWrap}>
           {metricsIsError ? (
             <InlineError
               isLoading={metricsRetrying}
@@ -96,14 +96,10 @@ const isEmpty = !isLoading && diaries.length === 0;
               }
             />
           ) : (
-            <div
-            >
-              <Paragraph>
-                {metricsLoading ? "(불러오는 중…)" : ""}
-              </Paragraph>
-
+            <div className={classes.metricsBox}>
+              {metricsLoading && <Paragraph>(불러오는 중…)</Paragraph>}
               {!metricsLoading && metrics && (
-                <div style={{ display: "grid", gap: 8 }}>
+                <div className={classes.metricsGrid}>
                   <div>
                     <b>작성된 글</b>
                   </div>

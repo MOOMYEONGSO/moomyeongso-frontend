@@ -10,3 +10,12 @@
 .guide {
   margin-top: 4rem;
 }
+
+.metricsWrap {
+  margin-top: 12px;
+}
+
+.metricsGrid {
+  display: grid;
+  gap: 6px;
+}
