@@ -1,6 +1,6 @@
 .tag {
   color: var(--color-gray-3);
-  padding: 1.2rem 0.8rem;
+  padding: 1.2rem;
   border-radius: 0.8rem;
   box-sizing: border-box;
   background-color: var(--background-color);

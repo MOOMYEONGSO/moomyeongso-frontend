@@ -276,7 +276,7 @@ function DiaryWritePage() {
             type="button"
             alwaysHoverStyle
             variant="main"
-            state="default"
+            state={tags.length > 0 ? "active" : "default"}
             disabled={tags.length === 0}
             onClick={() => {
               setShowTagSelect(false);

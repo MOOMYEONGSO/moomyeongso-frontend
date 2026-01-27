@@ -22,17 +22,9 @@ export default function TagButton({
       className={`${classes.container} ${isSelected ? classes.active : ""}`}
       onClick={onClick}
     >
-      {image ? (
-        <img src={image} alt="" className={classes.image} />
-      ) : (
-        <div
-          className={classes.image}
-          style={{
-            borderRadius: "20%",
-            backgroundColor: isSelected ? "#ccc" : "#333",
-          }}
-        />
-      )}
+      <div className={classes.image}>
+        {image && <img src={image} alt="" className={classes.icon} />}
+      </div>
       <div className={classes.textGroup}>
         <span className={classes.title}>{title}</span>
         <span className={classes.subtitle}>{subtitle}</span>
