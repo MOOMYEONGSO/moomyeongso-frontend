@@ -1,6 +1,8 @@
 import client from "../../../api/client";
 import type { DiaryType } from "../types/types";
 import type { AdminPostResponse} from "../../admin/types/adminPost";
+import type { TodayMetricsResponse } from "../types/types";
+import { unwrap } from "../../../api/helpers";
 
 export type AdminPostDetailResponse = AdminPostResponse;
 
@@ -19,5 +21,9 @@ export const adminDiaryApi = {
 
   async remove(postId: string): Promise<void> {
     await client.delete(`/admin/posts/${postId}`);
+  },
+  async getTodayMetrics(): Promise<TodayMetricsResponse> {
+    const res = await client.get("/admin/metrics/today");
+    return unwrap<TodayMetricsResponse>(res);
   },
 };
