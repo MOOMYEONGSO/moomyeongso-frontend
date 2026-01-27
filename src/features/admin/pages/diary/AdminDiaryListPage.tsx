@@ -8,6 +8,7 @@ import Paragraph from "../../../../components/paragraph/Paragraph";
 import { useAdminDiaries } from "../../hooks/useAdminDiaries";
 import { toAppError } from "../../../../api/errors";
 import type { DiaryPreview } from "../../../diary/types/types";
+import { useTodayMetrics } from "../../hooks/useTodayMetrics";
 
 function AdminDiaryListPage() {
   const navigate = useNavigate();
@@ -23,7 +24,17 @@ function AdminDiaryListPage() {
     type: apiType,
   });
 
+  const {
+    data: metrics,
+    isLoading: metricsLoading,
+    isError: metricsIsError,
+    error: metricsError,
+    refetch: refetchMetrics,
+  } = useTodayMetrics();
+
   const [retrying, setRetrying] = useState(false);
+  const [metricsRetrying, setMetricsRetrying] = useState(false);
+
 
   if (isError) {
     const message =
@@ -58,11 +69,77 @@ const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
 }));
 
 const isEmpty = !isLoading && diaries.length === 0;
+  const totalUsers = (metrics?.members ?? 0) + (metrics?.anonymous ?? 0);
+  const ratio =
+    totalUsers === 0 ? 0 : ((metrics?.members ?? 0) / totalUsers) * 100;
+
   return (
     <div className={classes.list}>
       <div className={classes.guide} role="note" aria-live="polite">
-        <Paragraph>관리자 화면입니다.</Paragraph>
-        <Paragraph>게시글을 조회/관리할 수 있습니다.</Paragraph>
+        <Paragraph>오늘의 무명소</Paragraph>
+
+        <div className={classes.metricsWrap}>
+          {metricsIsError ? (
+            <InlineError
+              isLoading={metricsRetrying}
+              onRetry={async () => {
+                try {
+                  setMetricsRetrying(true);
+                  await refetchMetrics();
+                } finally {
+                  setMetricsRetrying(false);
+                }
+              }}
+              message={
+                toAppError(metricsError).message ??
+                "오늘의 metrics를 불러오지 못했어요."
+              }
+            />
+          ) : (
+            <div className={classes.metricsBox}>
+              {metricsLoading && <Paragraph>(불러오는 중…)</Paragraph>}
+              {!metricsLoading && metrics && (
+                <div className={classes.metricsGrid}>
+                  <div>
+                    <b>작성된 글</b>
+                  </div>
+
+                  <div>
+                    · 짧은 기록 <b>{metrics.shortPosts}</b>개 (누적{" "}
+                    <b>{metrics.shortTotalPosts}</b>개)
+                  </div>
+
+                  <div>
+                    · 깊은 고민 <b>{metrics.longPosts}</b>개 (누적{" "}
+                    <b>{metrics.longTotalPosts}</b>개)
+                  </div>
+
+                  <div>
+                    · 오늘의 주제 <b>{metrics.todayPosts}</b>개 (누적{" "}
+                    <b>{metrics.todayTotalPosts}</b>개)
+                  </div>
+
+                  <div style={{ marginTop: 4 }}>
+                    <b>회원 현황</b>
+                  </div>
+
+                  <div>
+                    · 신규 회원가입 <b>{metrics.members}</b>명 (누적{" "}
+                    <b>{metrics.totalMembers}</b>명)
+                  </div>
+
+                  <div>
+                    · 익명 이용자 <b>{metrics.anonymous}</b>명
+                  </div>
+
+                  <div>
+                    · 익명 대비 신규 회원 비율 <b>{ratio.toFixed(1)}%</b>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <CardListContainer

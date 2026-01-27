@@ -55,6 +55,17 @@ export type Topic = {
   status: string;
   publishedDate: string;
 };
+export type TodayMetricsResponse = {
+  shortPosts: number;
+  shortTotalPosts: number;
+  longPosts: number;
+  longTotalPosts: number;
+  todayPosts: number;
+  todayTotalPosts: number;
+  members: number;
+  totalMembers: number;
+  anonymous: number;
+};
 
 export type GetDiariesResponse = ApiResponse<DiaryPreview[]>;
 export type GetDiaryResponse = ApiResponse<DiaryDetail>;
