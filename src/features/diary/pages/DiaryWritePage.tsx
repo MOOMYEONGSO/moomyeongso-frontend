@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, type ChangeEvent } from "react";
 import Form, { type FormHandle } from "../../../components/form/Form";
 import TextArea from "../../../components/textarea/TextArea";
 import TextCount from "../components/text/TextCount";
+import textAreaClasses from "../../../components/textarea/TextArea.module.css";
 import classes from "./DiaryWritePage.module.css";
 import Button from "../../../components/button/Button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -278,6 +279,7 @@ function DiaryWritePage() {
             variant="main"
             state={tags.length > 0 ? "active" : "default"}
             disabled={tags.length === 0}
+            className={tags.length > 0 ? classes.activeNextButton : undefined}
             onClick={() => {
               setShowTagSelect(false);
               setShowConfirm(true);
@@ -299,6 +301,7 @@ function DiaryWritePage() {
             setTitle(e.target.value)
           }
           disabled={submitting}
+          className={textAreaClasses.textarea}
         />
         {/* <Modal.Textarea
           name="tags"
