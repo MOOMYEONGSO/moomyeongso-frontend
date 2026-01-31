@@ -18,6 +18,7 @@ type Props = {
   type?: "daily" | "mind" | "today";
   emptyMessage: string;
   interactionMode?: InteractionMode;
+  onClickCardOverride?: (id: string) => void;
 };
 
 const CardListContainer = ({
@@ -28,6 +29,7 @@ const CardListContainer = ({
   type,
   emptyMessage,
   interactionMode = "modal",
+  onClickCardOverride,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -43,6 +45,10 @@ const CardListContainer = ({
   }, [coin, isConfirmOpen]);
 
   const onClickCard = (id: string) => {
+    if (onClickCardOverride) {
+      onClickCardOverride(id);
+      return;
+    }
     if (interactionMode === "direct") {
       navigate(PATHS.DIARY_DETAIL_ID(id));
       return;

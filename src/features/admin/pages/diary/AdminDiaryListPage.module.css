@@ -1,0 +1,21 @@
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+
+.guide {
+  margin-top: 4rem;
+}
+
+.metricsWrap {
+  margin-top: 12px;
+}
+
+.metricsGrid {
+  display: grid;
+  gap: 6px;
+}

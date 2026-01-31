@@ -126,6 +126,14 @@ export function isAuthenticatedUser(): boolean {
   return !!id && id.role !== "ANONYMOUS";
 }
 
+export function isAdminUser(): boolean {
+  const identity = getCurrentIdentity();
+  if (!identity) return false;
+
+  const role = identity.role;
+  return role === "ADMIN" || role === "ROLE_ADMIN";
+}
+
 export function hasValidToken(nowSec = Math.floor(Date.now() / 1000)): boolean {
   const token = getAccessToken();
   if (!token) return false;

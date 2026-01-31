@@ -2,10 +2,15 @@ import type { ApiResponse } from "../../../api/types";
 
 export type DiaryType = "SHORT" | "LONG" | "TODAY";
 
-export type CreateDiaryRequest = {
+export type PostBody = {
   title: string;
   content: string;
+};
+
+
+export type CreateDiaryRequest = PostBody & {
   type: DiaryType;
+  tags: string[];
 };
 
 export type CreateDiaryResponse = {
@@ -49,6 +54,17 @@ export type Topic = {
   title: string;
   status: string;
   publishedDate: string;
+};
+export type TodayMetricsResponse = {
+  shortPosts: number;
+  shortTotalPosts: number;
+  longPosts: number;
+  longTotalPosts: number;
+  todayPosts: number;
+  todayTotalPosts: number;
+  members: number;
+  totalMembers: number;
+  anonymous: number;
 };
 
 export type GetDiariesResponse = ApiResponse<DiaryPreview[]>;
