@@ -40,7 +40,8 @@ function DiaryPostSubmitPage() {
           state: state.streakState,
         });
       } else {
-        nav(PATHS.DIARY_LIST_TYPE(routeType), { replace: true });
+        // 캘린더가 없어도 랜덤 리롤 페이지로 이동
+        nav(PATHS.DIARY_REROLL_TYPE(routeType), { replace: true });
       }
     }, stayMs);
     return () => clearTimeout(t);

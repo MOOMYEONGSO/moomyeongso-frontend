@@ -7,7 +7,6 @@ export type PostBody = {
   content: string;
 };
 
-
 export type CreateDiaryRequest = PostBody & {
   type: DiaryType;
   tags: string[];
@@ -69,3 +68,21 @@ export type TodayMetricsResponse = {
 
 export type GetDiariesResponse = ApiResponse<DiaryPreview[]>;
 export type GetDiaryResponse = ApiResponse<DiaryDetail>;
+
+// Random Diary 응답 타입
+export type RandomDiary = {
+  postId: string;
+  userId: string;
+  title: string;
+  contentPreview: string;
+  contentLength: number;
+  tags: string[];
+  likes: number;
+  views: number;
+  createdAt: string;
+};
+
+export type RandomDiaryResponse = {
+  coin: number;
+  posts: RandomDiary[];
+};

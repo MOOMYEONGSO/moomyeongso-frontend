@@ -1,0 +1,78 @@
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import CardListContainer from "../components/card/CardListContainer";
+import { useRandomDiaries } from "../hooks/useRandomDiaries";
+import classes from "./DiaryRerollPage.module.css";
+import type { UiType } from "../types/typeMap";
+import { InlineError } from "../../../components/status/InlineStates";
+import Paragraph from "../../../components/paragraph/Paragraph";
+import Button from "../../../components/button/Button";
+import { PATHS } from "../../../constants/path";
+
+function DiaryRerollPage() {
+  const { type } = useParams<{ type?: UiType }>();
+  const navigate = useNavigate();
+  const routeType = type ?? "daily";
+
+  // 랜덤 3개 가져오기
+  const { data, isLoading, isError, error, refetch } = useRandomDiaries(3);
+
+  const [retrying, setRetrying] = useState(false);
+
+  if (isError) {
+    const message =
+      error && typeof (error as any).message === "string"
+        ? (error as any).message
+        : "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
+
+    return (
+      <InlineError
+        isLoading={retrying}
+        onRetry={async () => {
+          try {
+            setRetrying(true);
+            await refetch();
+          } finally {
+            setRetrying(false);
+          }
+        }}
+        message={message}
+      />
+    );
+  }
+
+  const diaries = data?.posts ?? [];
+  const coin = data?.coin ?? 0;
+  const isEmpty = !isLoading && diaries.length === 0;
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.header} role="note" aria-live="polite">
+        <Paragraph>나와 비슷한 타인의 일기를 읽어보세요.</Paragraph>
+      </div>
+
+      <CardListContainer
+        diaries={diaries}
+        coin={coin}
+        isLoading={isLoading}
+        isEmpty={isEmpty}
+        type={type}
+        emptyMessage="불러올 수 있는 이야기가 없어요."
+      />
+
+      <div className={classes.footer}>
+        <Button
+          variant="main"
+          state="active"
+          onClick={() =>
+            navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true })
+          }
+        >
+          전체 포스트 받기
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default DiaryRerollPage;

@@ -47,7 +47,7 @@ function DiaryStreakPage() {
   const streakDays = state.totalStreakDays ?? weekStreak;
 
   const goList = () =>
-    navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true });
+    navigate(PATHS.DIARY_REROLL_TYPE(routeType), { replace: true });
   const goSignup = () => navigate(PATHS.SIGN_UP);
 
   return (
