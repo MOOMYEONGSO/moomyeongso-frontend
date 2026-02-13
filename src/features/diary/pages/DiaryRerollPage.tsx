@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { useRandomDiaries } from "../hooks/useRandomDiaries";
 import classes from "./DiaryRerollPage.module.css";
@@ -12,10 +12,20 @@ import { PATHS } from "../../../constants/path";
 function DiaryRerollPage() {
   const { type } = useParams<{ type?: UiType }>();
   const navigate = useNavigate();
+  const { state } = useLocation() as { state?: { tags?: string[] } };
   const routeType = type ?? "daily";
+  const tags = Array.isArray(state?.tags)
+    ? state.tags.filter((tag): tag is string => typeof tag === "string")
+    : [];
+  const [rerollCount, setRerollCount] = useState(0);
+  const hasUsedReroll = rerollCount >= 1;
 
   // 랜덤 3개 가져오기
-  const { data, isLoading, isError, error, refetch } = useRandomDiaries(3);
+  const { data, isLoading, isError, error, refetch } = useRandomDiaries(
+    3,
+    tags,
+    rerollCount,
+  );
 
   const [retrying, setRetrying] = useState(false);
 
@@ -61,6 +71,18 @@ function DiaryRerollPage() {
       />
 
       <div className={classes.footer}>
+        {!hasUsedReroll && (
+          <Button
+            variant="main"
+            state="active"
+            onClick={() => {
+              setRerollCount(1);
+            }}
+          >
+            리롤 (1회 가능)
+          </Button>
+        )}
+
         <Button
           variant="main"
           state="active"

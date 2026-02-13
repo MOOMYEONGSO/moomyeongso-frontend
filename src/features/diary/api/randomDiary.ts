@@ -5,11 +5,13 @@ import type { RandomDiaryResponse } from "../types/types";
 
 export const fetchRandomDiaries = async (
   count: number = 3,
+  tags: string[] = [],
+  reroll: number = 0,
 ): Promise<RandomDiaryResponse> => {
   const response = await client.get<ApiResponse<RandomDiaryResponse>>(
     "/posts/random",
     {
-      params: { count },
+      params: { count, tags, reroll },
     },
   );
 
