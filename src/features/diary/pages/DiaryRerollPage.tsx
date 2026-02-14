@@ -71,27 +71,38 @@ function DiaryRerollPage() {
       />
 
       <div className={classes.footer}>
-        {!hasUsedReroll && (
-          <Button
-            variant="main"
-            state="active"
-            onClick={() => {
-              setRerollCount(1);
-            }}
-          >
-            리롤 (1회 가능)
-          </Button>
-        )}
-
-        <Button
-          variant="main"
-          state="active"
-          onClick={() =>
-            navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true })
-          }
+        <div
+          className={classes.rerollWrapper}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            alignItems: "center",
+          }}
         >
-          전체 포스트 받기
-        </Button>
+          <div className={classes.rerollMessage}>다가오는 글이 없으신가요?</div>
+          {!hasUsedReroll ? (
+            <Button
+              variant="main"
+              state="active"
+              onClick={() => {
+                setRerollCount(1);
+              }}
+            >
+              흘려 보내고 다시 받기
+            </Button>
+          ) : (
+            <Button
+              variant="main"
+              state="active"
+              onClick={() =>
+                navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true })
+              }
+            >
+              전체 포스트 받기
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
