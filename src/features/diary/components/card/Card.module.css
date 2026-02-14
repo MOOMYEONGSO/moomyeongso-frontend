@@ -12,7 +12,9 @@
   min-height: 16rem;
   /* gap: 3rem; */
   background-color: rgba(41, 40, 39, 0.6);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 
   /* 글로우를 카드 안에 가두기 */
   position: relative;
@@ -25,11 +27,31 @@
   --glow-opacity: 0.08;
 }
 
-.card > div {
+.card > * {
   width: 100%;
+  position: relative;
+}
+
+.card > div {
+  z-index: 1;
+}
+
+/* --------- 태그 레이어 --------- */
+.tags {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-size: 1.3rem;
+  color: var(--color-gray-2);
+  font-weight: 500;
+}
+
+/* --------- 오버레이 레이어 --------- */
+.overlayImage {
+  object-fit: cover;
 }
 
 .card:hover {
@@ -57,7 +79,9 @@
   filter: blur(var(--glow-blur));
   opacity: var(--glow-opacity);
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .card:hover::before {
@@ -97,7 +121,10 @@
   opacity: 0;
   transform: translateY(4px);
   pointer-events: none; /* 마우스 이벤트 막기 */
-  transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
   filter: blur(2px);
 }
 
