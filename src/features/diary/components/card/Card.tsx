@@ -1,7 +1,8 @@
-import type { ComponentPropsWithoutRef } from "react";
+import { useMemo, type ComponentPropsWithoutRef } from "react";
 import classes from "./Card.module.css";
 import Title from "../title/Title";
-import Count from "../count/Count";
+// import Count from "../count/Count";
+import { getRandomOverlayUrl } from "../../utils/overlayImages";
 
 type CardProps = ComponentPropsWithoutRef<"article"> & {
   title: string;
@@ -12,12 +13,15 @@ type CardProps = ComponentPropsWithoutRef<"article"> & {
 
 const Card = ({
   title,
-  textCount,
+  // textCount,
   isAuthor,
   className,
+  tags,
   ...props
 }: CardProps) => {
   const authorType = isAuthor ? "self" : "other";
+
+  const randomOverlay = useMemo(() => getRandomOverlayUrl(), [title]);
 
   return (
     <article
@@ -25,9 +29,20 @@ const Card = ({
       {...props}
     >
       <Title authorType={authorType}>{title}</Title>
-      <div>
-        <Count className={classes.count}>{textCount}</Count>
+      <div className={classes.tags}>
+        {tags?.map((tag) => (
+          <span key={tag} className={classes.tag}>
+            #{tag}
+          </span>
+        ))}
       </div>
+      {/* <div>
+        <Count className={classes.count}>{textCount}</Count>
+      </div> */}
+
+      {randomOverlay && (
+        <img src={randomOverlay} alt="" className={classes.overlayImage} />
+      )}
     </article>
   );
 };

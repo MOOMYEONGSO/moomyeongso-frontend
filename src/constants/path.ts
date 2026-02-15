@@ -13,10 +13,10 @@ export const PATHS = {
   ERROR: "/error",
   PROFILE: "/profile",
   FEEDBACK: "/feedback",
+  DIARY_REROLL: "/diary/reroll/:type",
 
   ADMIN_DIARIES_BY_TYPE: (type: string) => `/admin/diaries/${type}`,
-  ADMIN_DIARY_DETAIL: (postId: string) =>
-    `/admin/diaries/post/${postId}`,
+  ADMIN_DIARY_DETAIL: (postId: string) => `/admin/diaries/post/${postId}`,
   DIARY_LIST_TYPE: (type: "today" | "daily" | "mind") => `/diary/${type}`,
   DIARY_SUBMIT_TYPE: (type: "today" | "daily" | "mind") =>
     `/diary/submit/${type}`,
@@ -24,4 +24,5 @@ export const PATHS = {
   DIARY_NEW_TYPE: (type: "today" | "daily" | "mind") => `/diary/new/${type}`,
   DIARY_STREAK_TYPE: (type: "today" | "daily" | "mind") =>
     `/diary/streak/${type}`,
+  DIARY_REROLL_TYPE: (type: string) => `/diary/reroll/${type}`,
 } as const;

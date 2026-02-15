@@ -104,6 +104,7 @@ function DiaryWritePage() {
         replace: true,
         state: {
           type: typeLower,
+          tags: parsedTags,
           showCalendar: data.showCalendar,
           streakState: data.showCalendar
             ? {
@@ -111,6 +112,7 @@ function DiaryWritePage() {
                 coin: data.coin,
                 totalPosts: data.totalPosts,
                 postId: data.postId,
+                tags: parsedTags,
               }
             : undefined,
           stayMs: 1600,

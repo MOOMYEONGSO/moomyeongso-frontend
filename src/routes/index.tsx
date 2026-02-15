@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom"; 
+import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../layouts/RootLayout";
 import LandingPage from "../features/diary/pages/LandingPage";
 import DiaryListPage from "../features/diary/pages/DiaryListPage";
@@ -18,6 +18,7 @@ import { PATHS } from "../constants/path";
 import DiaryStreakPage from "../features/diary/pages/DiaryStreakPage";
 import AdminDiaryListPage from "../features/admin/pages/diary/AdminDiaryListPage";
 import AdminDiaryDetailPage from "../features/admin/pages/diary/AdminDiaryDetailPage";
+import DiaryRerollPage from "../features/diary/pages/DiaryRerollPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: PATHS.HOME, element: <LandingPage /> },
+      {
+        path: PATHS.DIARY_REROLL,
+        element: <DiaryRerollPage />,
+      },
+
       { path: PATHS.DIARY_ALL, element: <DiaryListPage /> },
       { path: PATHS.DIARY_LIST, element: <DiaryListPage /> },
       { path: PATHS.DIARY_DETAIL, element: <DiaryDetailPage /> },
@@ -36,15 +42,20 @@ const router = createBrowserRouter([
       {
         element: <AdminRoute />,
         children: [
-          { path: PATHS.ADMIN_DIARIES, element: <AdminDiaryListPage />,},
-          { path: `${PATHS.ADMIN_DIARIES}/:type`, element: <AdminDiaryListPage />,},
-          { path: `${PATHS.ADMIN_DIARIES}/post/:id`, element: <AdminDiaryDetailPage />,},
+          { path: PATHS.ADMIN_DIARIES, element: <AdminDiaryListPage /> },
+          {
+            path: `${PATHS.ADMIN_DIARIES}/:type`,
+            element: <AdminDiaryListPage />,
+          },
+          {
+            path: `${PATHS.ADMIN_DIARIES}/post/:id`,
+            element: <AdminDiaryDetailPage />,
+          },
         ],
       },
       {
         element: <ProtectedRoute />,
-        children: [
-          { path: PATHS.PROFILE, element: <ProfilePage /> }],
+        children: [{ path: PATHS.PROFILE, element: <ProfilePage /> }],
       },
     ],
   },

@@ -14,6 +14,7 @@ type StreakState = {
   totalPosts: number;
   postId: string;
   totalStreakDays?: number;
+  tags?: string[];
 };
 
 const isWeekArr = (a?: unknown[]) => Array.isArray(a) && a.length === 7;
@@ -47,7 +48,10 @@ function DiaryStreakPage() {
   const streakDays = state.totalStreakDays ?? weekStreak;
 
   const goList = () =>
-    navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true });
+    navigate(PATHS.DIARY_REROLL_TYPE(routeType), {
+      replace: true,
+      state: { tags: state.tags },
+    });
   const goSignup = () => navigate(PATHS.SIGN_UP);
 
   return (

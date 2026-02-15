@@ -8,6 +8,7 @@ import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 
 type State = {
   type?: UiType;
+  tags?: string[];
   stayMs?: number;
   message?: string;
   showCalendar?: boolean;
@@ -16,6 +17,7 @@ type State = {
     coin: number;
     totalPosts: number;
     postId: string;
+    tags?: string[];
   };
 };
 
@@ -37,14 +39,23 @@ function DiaryPostSubmitPage() {
       if (state.showCalendar) {
         nav(PATHS.DIARY_STREAK_TYPE(routeType), {
           replace: true,
-          state: state.streakState,
+          state: {
+            ...state.streakState,
+            tags: state.tags,
+          },
         });
       } else {
-        nav(PATHS.DIARY_LIST_TYPE(routeType), { replace: true });
+        // 캘린더가 없어도 랜덤 리롤 페이지로 이동
+        nav(PATHS.DIARY_REROLL_TYPE(routeType), {
+          replace: true,
+          state: {
+            tags: state.tags,
+          },
+        });
       }
     }, stayMs);
     return () => clearTimeout(t);
-  }, [nav, routeType, stayMs, state.showCalendar, state.streakState]);
+  }, [nav, routeType, stayMs, state.showCalendar, state.streakState, state.tags]);
 
   return (
     <main
