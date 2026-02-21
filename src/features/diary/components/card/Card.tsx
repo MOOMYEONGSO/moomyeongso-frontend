@@ -37,7 +37,7 @@ const Card = ({
             <div className={classes.metaLeft}>
               {tags.map((tag) => {
                 const label = CARD_TAG_LABEL[tag as tags];
-                if (label === undefined) return null;
+                if (!label) return null;
 
                 return (
                   <span key={tag} className={classes.tag}>

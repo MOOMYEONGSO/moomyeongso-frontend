@@ -21,3 +21,26 @@
   justify-content: center;
   width: 100%;
 }
+
+.rerollButton {
+  background-color: var(--color-green) !important;
+  color: var(--color-yellow) !important;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.rerollWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.allPostsButton {
+  background-color: #d9d9d90a !important;
+  border: 1px solid #d9d9d914 !important;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gray-1) !important;
+}
