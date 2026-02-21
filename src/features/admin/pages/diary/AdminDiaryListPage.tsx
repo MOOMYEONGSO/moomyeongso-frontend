@@ -35,10 +35,10 @@ function AdminDiaryListPage() {
   const [retrying, setRetrying] = useState(false);
   const [metricsRetrying, setMetricsRetrying] = useState(false);
 
-
   if (isError) {
     const message =
-    toAppError(error).message ?? "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
+      toAppError(error).message ??
+      "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
 
     return (
       <InlineError
@@ -56,8 +56,7 @@ function AdminDiaryListPage() {
     );
   }
 
-
-const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
+  const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
     postId: p.postId,
     userId: p.userId,
     title: p.title,
@@ -66,9 +65,10 @@ const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
     likes: p.likes,
     views: p.views,
     createdAt: p.createdAt,
-}));
+    tags: p.tags ?? [],
+  }));
 
-const isEmpty = !isLoading && diaries.length === 0;
+  const isEmpty = !isLoading && diaries.length === 0;
   const totalUsers = (metrics?.members ?? 0) + (metrics?.anonymous ?? 0);
   const ratio =
     totalUsers === 0 ? 0 : ((metrics?.members ?? 0) / totalUsers) * 100;

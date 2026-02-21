@@ -30,6 +30,7 @@ export type DiaryPreview = {
   title: string;
   contentPreview?: string;
   contentLength: number;
+  tags: string[];
   likes?: number;
   views?: number;
   createdAt?: string;

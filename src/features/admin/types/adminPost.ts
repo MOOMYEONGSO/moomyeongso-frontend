@@ -5,9 +5,10 @@ export type AdminPostResponse = {
   title: string;
   content: string;
   userId: string;
-  type: AdminPostType;   
+  type: AdminPostType;
   isDeleted: boolean;
   views: number;
   likes: number;
-  createdAt: string;    
+  createdAt: string;
+  tags?: string[];
 };

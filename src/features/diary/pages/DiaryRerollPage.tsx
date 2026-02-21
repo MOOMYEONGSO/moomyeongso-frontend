@@ -71,20 +71,13 @@ function DiaryRerollPage() {
       />
 
       <div className={classes.footer}>
-        <div
-          className={classes.rerollWrapper}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
-            alignItems: "center",
-          }}
-        >
+        <div className={classes.rerollWrapper}>
           <div className={classes.rerollMessage}>다가오는 글이 없으신가요?</div>
           {!hasUsedReroll ? (
             <Button
               variant="main"
               state="active"
+              className={classes.rerollButton}
               onClick={() => {
                 setRerollCount(1);
               }}
@@ -95,6 +88,7 @@ function DiaryRerollPage() {
             <Button
               variant="main"
               state="active"
+              className={classes.allPostsButton}
               onClick={() =>
                 navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true })
               }
