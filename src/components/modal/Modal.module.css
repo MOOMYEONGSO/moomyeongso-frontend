@@ -12,7 +12,7 @@
 /* === Content === */
 .modal-content {
   position: relative;
-  width: min(800px, 92vw);
+  width: min(850px, 92vw);
   max-height: 90dvh;
   overflow: hidden;
   padding: 40px;
@@ -24,7 +24,8 @@
   --bg-rgb: 38, 37, 36;
   --stroke-rgba: 217, 217, 217, 0.08;
 
-  background: linear-gradient(
+  background:
+    linear-gradient(
       to bottom right,
       rgba(var(--bg-rgb), 0.3) 0%,
       rgba(var(--bg-rgb), 0.34) 100%
@@ -32,7 +33,9 @@
     rgba(var(--bg-rgb), 0.92);
 
   border: 1px solid rgba(var(--stroke-rgba));
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 2px 12px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.35),
+    0 2px 12px rgba(0, 0, 0, 0.25);
   color: rgba(217, 217, 217, 0.92);
 }
 

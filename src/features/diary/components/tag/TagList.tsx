@@ -1,4 +1,4 @@
-import Tag from "./Tag";
+import Tag from "../label/tag/Tag";
 import classes from "./TagList.module.css";
 type TagListType = {
   tags: string[];

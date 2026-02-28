@@ -1,3 +1,4 @@
+import type { tags } from "../types/tags";
 import iconPeople from "../../../assets/tags/people-icon.png";
 import iconThoughts from "../../../assets/tags/thoughts-icon.png";
 import iconHappy from "../../../assets/tags/happy-icon.png";
@@ -6,6 +7,16 @@ import iconGratitude from "../../../assets/tags/gratitude-icon.png";
 import iconOther from "../../../assets/tags/other-icon.png";
 
 import iconTime from "../../../assets/tags/time-icon.png";
+
+export const CARD_TAG_LABEL: Record<tags, string> = {
+  PEOPLE: "사람",
+  FRIENDSHIP: "친구",
+  THOUGHTS: "생각",
+  HAPPY: "행복",
+  GRATITUDE: "감사",
+  TIME: "시간",
+  OTHER: "",
+};
 
 export const DIARY_TAGS = [
   {

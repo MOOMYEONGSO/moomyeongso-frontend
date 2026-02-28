@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, type ChangeEvent } from "react";
 import Form, { type FormHandle } from "../../../components/form/Form";
 import TextArea from "../../../components/textarea/TextArea";
 import TextCount from "../components/text/TextCount";
+import textAreaClasses from "../../../components/textarea/TextArea.module.css";
 import classes from "./DiaryWritePage.module.css";
 import Button from "../../../components/button/Button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,8 +26,6 @@ const FORM_ID = "diary-form";
 const SHORT_MIN_LENGTH = 30;
 const LONG_MIN_LENGTH = 100;
 
-const DRAFT_KEY = "draft:diary-write";
-
 const isContentValid = (s: string, minLength: number) =>
   s.length >= minLength && s.trim().length > 0;
 
@@ -48,6 +47,8 @@ function DiaryWritePage() {
   const { type } = useParams<{ type: UiType }>();
   const diaryType: ApiType =
     type && UI_TO_API[type] ? UI_TO_API[type] : "SHORT";
+
+  const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
 
@@ -103,6 +104,7 @@ function DiaryWritePage() {
         replace: true,
         state: {
           type: typeLower,
+          tags: parsedTags,
           showCalendar: data.showCalendar,
           streakState: data.showCalendar
             ? {
@@ -110,6 +112,7 @@ function DiaryWritePage() {
                 coin: data.coin,
                 totalPosts: data.totalPosts,
                 postId: data.postId,
+                tags: parsedTags,
               }
             : undefined,
           stayMs: 1600,
@@ -140,7 +143,7 @@ function DiaryWritePage() {
     } catch {
       // ignore
     }
-  }, []);
+  }, [DRAFT_KEY]);
 
   // ==============================
   // 임시 저장 (입력 중 자동 저장)
@@ -157,7 +160,7 @@ function DiaryWritePage() {
       }
     }, 350);
     return () => clearTimeout(id);
-  }, [title, content, tags]);
+  }, [title, content, tags, DRAFT_KEY]);
 
   const canSubmit = isContentValid(content, MIN_LENGTH);
 
@@ -278,6 +281,7 @@ function DiaryWritePage() {
             variant="main"
             state={tags.length > 0 ? "active" : "default"}
             disabled={tags.length === 0}
+            className={tags.length > 0 ? classes.activeNextButton : undefined}
             onClick={() => {
               setShowTagSelect(false);
               setShowConfirm(true);
@@ -299,6 +303,7 @@ function DiaryWritePage() {
             setTitle(e.target.value)
           }
           disabled={submitting}
+          className={textAreaClasses.textarea}
         />
         {/* <Modal.Textarea
           name="tags"

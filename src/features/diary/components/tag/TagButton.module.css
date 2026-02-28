@@ -48,7 +48,7 @@
 .textGroup {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
   color: var(--color-gray-2);
 }
 
@@ -60,7 +60,7 @@
 }
 
 .subtitle {
-  font-size: var(--p1-font-size);
+  font-size: 16px;
   line-height: 1.2;
   color: var(--color-gray-3);
 }
