@@ -35,7 +35,6 @@ export type DiaryPreview = {
   views?: number;
   createdAt?: string;
   type?: DiaryType;
-  viewCount?: number;
 };
 
 export type PostsPayload = {
@@ -51,7 +50,6 @@ export type DiaryDetail = {
   views: number;
   createdAt: string;
   type?: DiaryType;
-  viewCount?: number;
 };
 
 export type Topic = {
@@ -86,7 +84,6 @@ export type RandomDiary = {
   views: number;
   createdAt: string;
   type?: DiaryType;
-  viewCount?: number;
 };
 
 export type RandomDiaryResponse = {
