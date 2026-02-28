@@ -13,7 +13,7 @@ type CardProps = ComponentPropsWithoutRef<"article"> & {
   tags?: string[];
   isAuthor?: boolean;
   textCount: number;
-  viewCount?: number;
+  views?: number;
 };
 
 const Card = ({
@@ -22,7 +22,7 @@ const Card = ({
   isAuthor,
   className,
   tags,
-  viewCount = 0,
+  views = 0,
   ...props
 }: CardProps) => {
   const authorType = isAuthor ? "self" : "other";
@@ -46,7 +46,7 @@ const Card = ({
             })}
           </div>
           <div className={classes.metaRight}>
-            <View>{viewCount}</View>
+            <View>{views}</View>
           </div>
         </div>
       </div>
