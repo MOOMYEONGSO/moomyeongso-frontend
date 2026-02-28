@@ -53,6 +53,7 @@ function DiaryStreakPage() {
       state: { tags: state.tags },
     });
   const goSignup = () => navigate(PATHS.SIGN_UP);
+  const goLogin = () => navigate(PATHS.LOGIN);
 
   return (
     <main className={classes.wrap} aria-live="polite">
@@ -102,7 +103,12 @@ function DiaryStreakPage() {
             {isLoggedIn ? "다음" : "회원가입"}
           </Button>
 
-          {!isLoggedIn && <Button onClick={goList}>다음에</Button>}
+          {!isLoggedIn && (
+            <>
+              <Button onClick={goLogin}>로그인하기</Button>
+              <Button onClick={goList}>다음에</Button>
+            </>
+          )}
         </div>
       </section>
     </main>
