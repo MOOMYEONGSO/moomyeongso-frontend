@@ -2,6 +2,8 @@ import { useMemo, type ComponentPropsWithoutRef } from "react";
 import classes from "./Card.module.css";
 import Title from "../title/Title";
 // import Count from "../count/Count";
+import View from "../label/view/View";
+import Tag from "../label/tag/Tag";
 import { getRandomOverlayUrl } from "../../utils/overlayImages";
 import { CARD_TAG_LABEL } from "../../constants/diaryTags";
 import type { tags } from "../../types/tags";
@@ -11,6 +13,7 @@ type CardProps = ComponentPropsWithoutRef<"article"> & {
   tags?: string[];
   isAuthor?: boolean;
   textCount: number;
+  viewCount?: number;
 };
 
 const Card = ({
@@ -19,6 +22,7 @@ const Card = ({
   isAuthor,
   className,
   tags,
+  viewCount = 0,
   ...props
 }: CardProps) => {
   const authorType = isAuthor ? "self" : "other";
@@ -33,22 +37,16 @@ const Card = ({
       <div className={classes.contentWrapper}>
         <Title authorType={authorType}>{title}</Title>
         <div className={classes.metaInfo}>
-          {tags && tags.length > 0 && (
-            <div className={classes.metaLeft}>
-              {tags.map((tag) => {
-                const label = CARD_TAG_LABEL[tag as tags];
-                if (!label) return null;
+          <div className={classes.metaLeft}>
+            {tags?.map((tag) => {
+              const label = CARD_TAG_LABEL[tag as tags];
+              if (!label) return null;
 
-                return (
-                  <span key={tag} className={classes.tag}>
-                    {label}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+              return <Tag key={tag}>{label}</Tag>;
+            })}
+          </div>
           <div className={classes.metaRight}>
-            {/* 추후 뷰어수/댓글수 영역 */}
+            <View>{viewCount}</View>
           </div>
         </div>
       </div>
