@@ -8,7 +8,7 @@ export type PostBody = {
 };
 
 export type CreateDiaryRequest = PostBody & {
-  type: DiaryType;
+  type: DiaryType | "DIARY" | (string & {});
   tags: string[];
 };
 

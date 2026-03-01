@@ -51,6 +51,9 @@ function DiaryWritePage() {
   const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
+  const createType = diaryType === "SHORT" || diaryType === "LONG"
+    ? "DIARY"
+    : diaryType;
 
   // 오늘의 주제 글인 경우, 주제 API 호출
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
@@ -88,7 +91,7 @@ function DiaryWritePage() {
       : "이곳 무명소는 고해성사를 담는 장소입니다. 말하지 못한 속마음을 조용히 흘려보내세요.";
 
   // API 호출
-  const { mutateAsync } = useCreateDiary(diaryType, {
+  const { mutateAsync } = useCreateDiary(createType, {
     onSuccess: (data) => {
       formRef.current?.clear();
       setTitle("");
