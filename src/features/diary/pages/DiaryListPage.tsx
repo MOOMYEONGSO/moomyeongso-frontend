@@ -10,11 +10,12 @@ import Paragraph from "../../../components/paragraph/Paragraph";
 function DiaryListPage() {
   const { type } = useParams<{ type?: UiType }>();
 
-  let apiType: "SHORT" | "LONG" | "TODAY" | undefined;
+  // TODO: 서버 조회 타입 정책 확정 후 daily/mind -> DIARY 임시 매핑 정리하기.
+  let apiType: "DIARY" | "TODAY" | "SHORT" | "LONG" | undefined;
   if (type === "daily") {
-    apiType = "SHORT";
+    apiType = "DIARY";
   } else if (type === "mind") {
-    apiType = "LONG";
+    apiType = "DIARY";
   } else if (type === "today") {
     apiType = "TODAY";
   } else {
