@@ -33,18 +33,20 @@ export function formatDiaryTime(
     day: "numeric",
     timeZone: tz,
   });
-  const md = fmt.format(start);
-  const [m, d] = md
-    .replaceAll(" ", "")
-    .replaceAll(".", "")
-    .split("")
-    .reduce<string[]>((acc, ch) => {
-      if (/\d/.test(ch)) acc.push(ch);
-      return acc;
-    }, [])
-    .join("")
-    .match(/(\d{1,2})(\d{1,2})/)!
-    .slice(1, 3);
+  const parts = fmt.formatToParts(start);
+  const monthPart = parts.find((part) => part.type === "month")?.value;
+  const dayPart = parts.find((part) => part.type === "day")?.value;
 
-  return `${Number(m)}월 ${Number(d)}일에 작성한 글입니다`;
+  if (!monthPart || !dayPart) {
+    return `${fmt.format(start)}에 작성한 글입니다`;
+  }
+
+  const month = Number(monthPart);
+  const day = Number(dayPart);
+
+  if (!Number.isFinite(month) || !Number.isFinite(day)) {
+    return `${fmt.format(start)}에 작성한 글입니다`;
+  }
+
+  return `${month}월 ${day}일에 작성한 글입니다`;
 }
