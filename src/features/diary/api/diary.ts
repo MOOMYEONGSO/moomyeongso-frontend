@@ -10,7 +10,8 @@ import type {
 } from "../types/types";
 
 export const diaryApi = {
-  async getAll(type?: "SHORT" | "LONG" | "TODAY"): Promise<PostsPayload> {
+  // TODO: 서버 조회 타입 정책 확정 후 DIARY 임시 허용 타입 정리하기.
+  async getAll(type?: "DIARY" | "SHORT" | "LONG" | "TODAY"): Promise<PostsPayload> {
     const res = await client.get<ApiResponse<PostsPayload>>("/posts", {
       params: type ? { type } : undefined,
     });
