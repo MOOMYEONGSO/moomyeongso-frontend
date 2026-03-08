@@ -38,13 +38,13 @@ function ProfilePage() {
     } else {
       showToast(
         "프로필 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
-        "cancel"
+        "cancel",
       );
     }
   }, [isError, error, navigate, showToast]);
 
   const { data: readData, isLoading: isReadLoading } = useReadDiaries(
-    currentTab === "read"
+    currentTab === "read",
   );
   const { data: writtenData, isLoading: isWrittenLoading } =
     useWrittenDiaries();
@@ -113,7 +113,7 @@ function ProfilePage() {
           isLoading={isListLoading}
           isEmpty={isEmpty}
           coin={me?.coin ?? 0}
-          type="daily"
+          type="public"
           emptyMessage={
             currentTab === "read"
               ? "아직 열람한 글이 없어요."

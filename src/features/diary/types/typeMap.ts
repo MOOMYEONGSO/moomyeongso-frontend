@@ -1,12 +1,12 @@
 export const UI_TO_API = {
-  daily: "SHORT",
-  mind: "LONG",
+  public: "MOOMYEONGSO",
+  mind: "DIARY",
   today: "TODAY",
 } as const;
 
 export const API_TO_UI = {
-  SHORT: "daily",
-  LONG: "mind",
+  MOOMYEONGSO: "public",
+  DIARY: "mind",
   TODAY: "today",
 } as const;
 

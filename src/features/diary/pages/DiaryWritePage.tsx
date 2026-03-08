@@ -46,19 +46,17 @@ function DiaryWritePage() {
 
   const { type } = useParams<{ type: UiType }>();
   const diaryType: ApiType =
-    type && UI_TO_API[type] ? UI_TO_API[type] : "SHORT";
+    type && UI_TO_API[type] ? UI_TO_API[type] : "MOOMYEONGSO";
 
   const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
-  const createType = diaryType === "SHORT" || diaryType === "LONG"
-    ? "DIARY"
-    : diaryType;
+  const createType = diaryType;
 
   // 오늘의 주제 글인 경우, 주제 API 호출
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
 
-  const MIN_LENGTH = diaryType === "LONG" ? LONG_MIN_LENGTH : SHORT_MIN_LENGTH;
+  const MIN_LENGTH = diaryType === "DIARY" ? LONG_MIN_LENGTH : SHORT_MIN_LENGTH;
 
   //
   const parsedTags = tags;
@@ -80,15 +78,15 @@ function DiaryWritePage() {
     ? topicLoading
       ? "오늘의 주제를 불러오는 중…"
       : (topic?.title ?? "오늘의 주제를 불러오지 못했어요")
-    : diaryType === "SHORT"
+    : diaryType === "MOOMYEONGSO"
       ? "짧은 기록 순간의 생각을 가볍게 남겨요."
       : "마음 깊은 곳의 이야기를 꺼내보아요.";
 
   const PLACEHOLDER_MESSAGE = isToday
     ? "주제에 대해서 자유롭게 작성해보세요."
-    : diaryType === "SHORT"
+    : diaryType === "MOOMYEONGSO"
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
-      : "이곳 무명소는 고해성사를 담는 장소입니다. 말하지 못한 속마음을 조용히 흘려보내세요.";
+      : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
 
   // API 호출
   const { mutateAsync } = useCreateDiary(createType, {

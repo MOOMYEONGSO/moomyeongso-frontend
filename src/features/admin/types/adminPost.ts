@@ -1,4 +1,4 @@
-export type AdminPostType = "SHORT" | "LONG" | "TODAY";
+export type AdminPostType = "MOOMYEONGSO" | "DIARY" | "TODAY";
 
 export type AdminPostResponse = {
   postId: string;

@@ -11,7 +11,9 @@ import type {
 
 export const diaryApi = {
   // TODO: 서버 조회 타입 정책 확정 후 DIARY 임시 허용 타입 정리하기.
-  async getAll(type?: "DIARY" | "SHORT" | "LONG" | "TODAY"): Promise<PostsPayload> {
+  async getAll(
+    type?: "DIARY" | "MOOMYEONGSO" | "TODAY",
+  ): Promise<PostsPayload> {
     const res = await client.get<ApiResponse<PostsPayload>>("/posts", {
       params: type ? { type } : undefined,
     });
@@ -25,7 +27,7 @@ export const diaryApi = {
     const res = await client.post<ApiResponse<CreateDiaryResponse>>(
       "/posts",
       body,
-      { validateStatus: (status) => status !== 401 }
+      { validateStatus: (status) => status !== 401 },
     );
     return unwrap(res);
   },

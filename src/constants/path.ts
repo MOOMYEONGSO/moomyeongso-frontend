@@ -17,12 +17,12 @@ export const PATHS = {
 
   ADMIN_DIARIES_BY_TYPE: (type: string) => `/admin/diaries/${type}`,
   ADMIN_DIARY_DETAIL: (postId: string) => `/admin/diaries/post/${postId}`,
-  DIARY_LIST_TYPE: (type: "today" | "daily" | "mind") => `/diary/${type}`,
-  DIARY_SUBMIT_TYPE: (type: "today" | "daily" | "mind") =>
+  DIARY_LIST_TYPE: (type: "today" | "public" | "mind") => `/diary/${type}`,
+  DIARY_SUBMIT_TYPE: (type: "today" | "public" | "mind") =>
     `/diary/submit/${type}`,
   DIARY_DETAIL_ID: (id: string) => `/diary/v/${id}`,
-  DIARY_NEW_TYPE: (type: "today" | "daily" | "mind") => `/diary/new/${type}`,
-  DIARY_STREAK_TYPE: (type: "today" | "daily" | "mind") =>
+  DIARY_NEW_TYPE: (type: "today" | "public" | "mind") => `/diary/new/${type}`,
+  DIARY_STREAK_TYPE: (type: "today" | "public" | "mind") =>
     `/diary/streak/${type}`,
   DIARY_REROLL_TYPE: (type: string) => `/diary/reroll/${type}`,
 } as const;

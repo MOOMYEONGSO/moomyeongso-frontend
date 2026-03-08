@@ -13,7 +13,7 @@ function DiaryRerollPage() {
   const { type } = useParams<{ type?: UiType }>();
   const navigate = useNavigate();
   const { state } = useLocation() as { state?: { tags?: string[] } };
-  const routeType = type ?? "daily";
+  const routeType = type ?? "public";
   const tags = Array.isArray(state?.tags)
     ? state.tags.filter((tag): tag is string => typeof tag === "string")
     : [];
