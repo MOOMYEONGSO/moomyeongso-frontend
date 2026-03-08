@@ -13,11 +13,11 @@ function DiaryListPage() {
   // TODO: 서버 조회 타입 정책 확정 후 daily/mind -> DIARY 임시 매핑 정리하기.
   let apiType: "DIARY" | "MOOMYEONGSO" | "TODAY" | undefined;
   if (type === "public") {
-    apiType = "DIARY";
+    apiType = "MOOMYEONGSO";
   } else if (type === "mind") {
     apiType = "DIARY";
   } else if (type === "today") {
-    apiType = "DIARY";
+    apiType = "TODAY";
   } else {
     apiType = undefined;
   }

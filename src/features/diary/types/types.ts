@@ -43,6 +43,15 @@ export type PostsPayload = {
   posts: DiaryPreview[];
 };
 
+export type Comment = {
+  commentId: string;
+  authorId: string;
+  authorNickname: string;
+  content: string;
+  createdAt: string;
+  mine: boolean;
+};
+
 export type DiaryDetail = {
   postId: string;
   title: string;
@@ -50,7 +59,9 @@ export type DiaryDetail = {
   likes: number;
   views: number;
   createdAt: string;
+  coin: number;
   type?: DiaryType;
+  comments: Comment[];
 };
 
 export type Topic = {

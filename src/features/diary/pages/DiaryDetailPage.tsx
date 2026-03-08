@@ -8,15 +8,24 @@ import { formatDiaryTime } from "../../../lib/diary/formatDiaryTime";
 import StoryPrompt from "../components/storyPrompt/StoryPrompt";
 import { PATHS } from "../../../constants/path";
 import { InlineError } from "../../../components/status/InlineStates";
+import type { DiaryType } from "../types/types";
+import CommentSection from "../components/comment/CommentSection";
+import type { Comment } from "../types/types";
 
 function DetailContent({
   content,
   isLoading,
   createdLabel,
+  // type,
+  postId,
+  comments = [],
 }: {
   content?: string;
   isLoading: boolean;
   createdLabel?: string;
+  type?: DiaryType;
+  postId?: string;
+  comments?: Comment[];
 }) {
   const paragraphs = useMemo(() => {
     const trimmed = content?.trim();
@@ -50,6 +59,10 @@ function DetailContent({
           </div>
         )}
       </div>
+
+      {!isLoading && postId && (
+        <CommentSection postId={postId} comments={comments} />
+      )}
 
       <div className={classes.storyPromptWrapper}>
         <StoryPrompt
@@ -103,6 +116,9 @@ export default function DiaryDetailPage() {
       content={data?.content}
       isLoading={isLoading}
       createdLabel={createdLabel}
+      type={data?.type}
+      postId={data?.postId}
+      comments={data?.comments}
     />
   );
 }

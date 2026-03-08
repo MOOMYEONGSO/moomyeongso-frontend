@@ -35,4 +35,10 @@ export const diaryApi = {
   getAllRaw() {
     return client.get<ApiResponse<DiaryPreview[]>>("/posts");
   },
+  async createComment(postId: string, content: string): Promise<void> {
+    await client.post(`/posts/${postId}/comments`, { content });
+  },
+  async deleteComment(postId: string, commentId: string): Promise<void> {
+    await client.delete(`/posts/${postId}/comments/${commentId}`);
+  },
 };
