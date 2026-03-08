@@ -51,7 +51,9 @@ function DiaryWritePage() {
   const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
-  const createType = diaryType;
+  // TODO: postType "DIARY" 로 임시 조치 해제
+  const createType =
+    diaryType === "MOOMYEONGSO" || diaryType === "TODAY" ? "DIARY" : diaryType;
 
   // 오늘의 주제 글인 경우, 주제 API 호출
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);

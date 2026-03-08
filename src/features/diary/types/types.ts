@@ -8,7 +8,8 @@ export type PostBody = {
 };
 
 export type CreateDiaryRequest = PostBody & {
-  type: DiaryType | (string & {});
+  // TODO: postType "DIARY" 로 임시 조치 해제
+  type: DiaryType | "DIARY" | (string & {});
   tags: string[];
 };
 

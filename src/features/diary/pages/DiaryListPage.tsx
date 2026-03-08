@@ -3,14 +3,24 @@ import { useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { useDiaries } from "../hooks/useDiaries";
 import classes from "./DiaryListPage.module.css";
-import { UI_TO_API, type UiType } from "../types/typeMap";
+import { type UiType } from "../types/typeMap";
 import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 
 function DiaryListPage() {
   const { type } = useParams<{ type?: UiType }>();
 
-  const apiType = type ? UI_TO_API[type] : undefined;
+  // TODO: 서버 조회 타입 정책 확정 후 daily/mind -> DIARY 임시 매핑 정리하기.
+  let apiType: "DIARY" | "MOOMYEONGSO" | "TODAY" | undefined;
+  if (type === "public") {
+    apiType = "DIARY";
+  } else if (type === "mind") {
+    apiType = "DIARY";
+  } else if (type === "today") {
+    apiType = "DIARY";
+  } else {
+    apiType = undefined;
+  }
 
   const { data, isLoading, isError, error, refetch } = useDiaries({
     type: apiType,
