@@ -31,6 +31,7 @@ const Button = ({
   revealEasing = "ease-in",
   variant = "main",
   state = "default",
+  style: customStyle,
   ...props
 }: ButtonProps) => {
   // revealOnMount=false면 초기에 바로 보이도록
@@ -57,6 +58,7 @@ const Button = ({
     "--reveal-delay": `${revealDelay}ms`,
     "--reveal-duration": `${revealDurationMs}ms`,
     "--reveal-easing": revealEasing,
+    ...customStyle,
   } as CSSProperties;
 
   return (
