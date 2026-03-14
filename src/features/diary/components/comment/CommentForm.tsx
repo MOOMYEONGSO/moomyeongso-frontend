@@ -23,7 +23,7 @@ export default function CommentForm({ postId }: Props) {
       setContent("");
       showToast("소중한 한마디가 전달되었습니다.", "info");
     } catch {
-      showToast("댓글 작성에 실패했습니다.", "cancel");
+      showToast("댓글 남기기가 실패했습니다. 다시 시도해주세요.", "cancel");
     }
   };
 
