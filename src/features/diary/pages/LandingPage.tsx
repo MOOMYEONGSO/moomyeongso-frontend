@@ -96,13 +96,13 @@ function LandingPage() {
             >
               {step >= 3 ? (
                 <Link
-                  to={PATHS.DIARY_NEW_TYPE("daily")}
+                  to={PATHS.DIARY_NEW_TYPE("public")}
                   className={classes.link}
                 >
                   <TypeCard
-                    title="짧은 기록"
-                    firstLine="순간의 생각을"
-                    secondLine="가볍게 남겨요."
+                    title="무명소"
+                    firstLine="누군가에게 고민거리를"
+                    secondLine="털어 놓아보세요."
                     revealOnMount
                     revealDelay={400}
                     revealDurationMs={800}
@@ -125,9 +125,9 @@ function LandingPage() {
                   className={classes.link}
                 >
                   <TypeCard
-                    title="깊은 고백"
-                    firstLine="마음 속 깊은 곳의"
-                    secondLine="이야기를 꺼내보아요."
+                    title="나만의 일기"
+                    firstLine="지금 머리 속에 있는"
+                    secondLine="생각을 남겨 보세요."
                     revealOnMount
                     revealDelay={800}
                     revealDurationMs={800}

@@ -23,7 +23,7 @@ function DiaryStreakPage() {
   const navigate = useNavigate();
   const { type } = useParams<{ type: UiType }>();
   const { state } = useLocation() as { state?: StreakState };
-  const routeType: UiType = type ?? "daily";
+  const routeType: UiType = type ?? "public";
   const isLoggedIn = isAuthenticatedUser();
 
   useEffect(() => {

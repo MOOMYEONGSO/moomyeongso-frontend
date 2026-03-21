@@ -7,6 +7,7 @@ import type { DiaryPreview } from "../../types/types";
 import Modal from "../../../../components/modal/Modal";
 import { PATHS } from "../../../../constants/path";
 import Button from "../../../../components/button/Button";
+import type { UiType } from "../../types/typeMap";
 
 type InteractionMode = "modal" | "direct";
 
@@ -15,7 +16,7 @@ type Props = {
   coin: number;
   isLoading: boolean;
   isEmpty: boolean;
-  type?: "daily" | "mind" | "today";
+  type?: UiType;
   emptyMessage: string;
   interactionMode?: InteractionMode;
   onClickCardOverride?: (id: string) => void;

@@ -14,9 +14,9 @@ function AdminDiaryListPage() {
   const navigate = useNavigate();
   const { type } = useParams<{ type?: UiType }>();
 
-  let apiType: "SHORT" | "LONG" | "TODAY" | undefined;
-  if (type === "daily") apiType = "SHORT";
-  else if (type === "mind") apiType = "LONG";
+  let apiType: "MOOMYEONGSO" | "DIARY" | "TODAY" | undefined;
+  if (type === "public") apiType = "MOOMYEONGSO";
+  else if (type === "mind") apiType = "DIARY";
   else if (type === "today") apiType = "TODAY";
   else apiType = undefined;
 
@@ -105,13 +105,13 @@ function AdminDiaryListPage() {
                   </div>
 
                   <div>
-                    · 짧은 기록 <b>{metrics.shortPosts}</b>개 (누적{" "}
-                    <b>{metrics.shortTotalPosts}</b>개)
+                    · 무명소 기록 <b>{metrics.publicPosts}</b>개 (누적{" "}
+                    <b>{metrics.publicTotalPosts}</b>개)
                   </div>
 
                   <div>
-                    · 깊은 고민 <b>{metrics.longPosts}</b>개 (누적{" "}
-                    <b>{metrics.longTotalPosts}</b>개)
+                    · 깊은 고민 <b>{metrics.mindPosts}</b>개 (누적{" "}
+                    <b>{metrics.mindTotalPosts}</b>개)
                   </div>
 
                   <div>

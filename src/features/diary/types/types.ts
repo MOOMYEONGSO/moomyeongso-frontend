@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../../../api/types";
 
-export type DiaryType = "SHORT" | "LONG" | "TODAY";
+export type DiaryType = "MOOMYEONGSO" | "DIARY" | "TODAY";
 
 export type PostBody = {
   title: string;
@@ -8,6 +8,7 @@ export type PostBody = {
 };
 
 export type CreateDiaryRequest = PostBody & {
+  // TODO: postType "DIARY" 로 임시 조치 해제
   type: DiaryType | "DIARY" | (string & {});
   tags: string[];
 };
@@ -42,6 +43,15 @@ export type PostsPayload = {
   posts: DiaryPreview[];
 };
 
+export type Comment = {
+  commentId: string;
+  authorId: string;
+  authorNickname: string;
+  content: string;
+  createdAt: string;
+  mine: boolean;
+};
+
 export type DiaryDetail = {
   postId: string;
   title: string;
@@ -49,7 +59,9 @@ export type DiaryDetail = {
   likes: number;
   views: number;
   createdAt: string;
+  coin: number;
   type?: DiaryType;
+  comments: Comment[];
 };
 
 export type Topic = {
@@ -58,10 +70,10 @@ export type Topic = {
   publishedDate: string;
 };
 export type TodayMetricsResponse = {
-  shortPosts: number;
-  shortTotalPosts: number;
-  longPosts: number;
-  longTotalPosts: number;
+  publicPosts: number;
+  publicTotalPosts: number;
+  mindPosts: number;
+  mindTotalPosts: number;
   todayPosts: number;
   todayTotalPosts: number;
   members: number;

@@ -4,7 +4,7 @@ import Title from "../title/Title";
 // import Count from "../count/Count";
 import View from "../label/view/View";
 import Tag from "../label/tag/Tag";
-import { getRandomOverlayUrl } from "../../utils/overlayImages";
+import { getRandomCardOverlayUrl } from "../../utils/overlayImages";
 import { CARD_TAG_LABEL } from "../../constants/diaryTags";
 import type { tags } from "../../types/tags";
 
@@ -27,7 +27,7 @@ const Card = ({
 }: CardProps) => {
   const authorType = isAuthor ? "self" : "other";
 
-  const randomOverlay = useMemo(() => getRandomOverlayUrl(), [title]);
+  const randomOverlay = useMemo(() => getRandomCardOverlayUrl(), [title]);
 
   return (
     <article

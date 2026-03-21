@@ -18,7 +18,9 @@ import { useToast } from "../../../contexts/ToastContext";
 import { ApiError } from "../../../api/types";
 
 function ProfilePage() {
-  const [currentTab, setCurrentTab] = useState<"written" | "read">("written");
+  const [currentTab, setCurrentTab] = useState<
+    "written" | "read" | "community"
+  >("written");
   const { data: me, isLoading: isMeLoading, error, isError } = useUserMe();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -38,24 +40,32 @@ function ProfilePage() {
     } else {
       showToast(
         "프로필 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
-        "cancel"
+        "cancel",
       );
     }
   }, [isError, error, navigate, showToast]);
 
   const { data: readData, isLoading: isReadLoading } = useReadDiaries(
-    currentTab === "read"
+    "read",
+    currentTab === "read",
   );
+  const { data: communityData, isLoading: isCommunityLoading } =
+    useReadDiaries("community", currentTab === "community");
   const { data: writtenData, isLoading: isWrittenLoading } =
     useWrittenDiaries();
 
   const diaries = useMemo(() => {
     if (currentTab === "read") return readData?.posts ?? [];
+    if (currentTab === "community") return communityData?.posts ?? [];
     return writtenData ?? [];
-  }, [currentTab, readData, writtenData]);
+  }, [currentTab, readData, communityData, writtenData]);
 
   const isListLoading =
-    currentTab === "read" ? isReadLoading : isWrittenLoading;
+    currentTab === "read"
+      ? isReadLoading
+      : currentTab === "community"
+        ? isCommunityLoading
+        : isWrittenLoading;
 
   const isEmpty = !isListLoading && (diaries?.length ?? 0) === 0;
 
@@ -107,17 +117,23 @@ function ProfilePage() {
       </div>
 
       <div className={classes.listSection}>
-        <DiaryTabs onChange={(id) => setCurrentTab(id as "written" | "read")} />
+        <DiaryTabs
+          onChange={(id) =>
+            setCurrentTab(id as "written" | "read" | "community")
+          }
+        />
         <CardListContainer
           diaries={diaries}
           isLoading={isListLoading}
           isEmpty={isEmpty}
           coin={me?.coin ?? 0}
-          type="daily"
+          type="public"
           emptyMessage={
             currentTab === "read"
               ? "아직 열람한 글이 없어요."
-              : "아직 작성한 글이 없어요."
+              : currentTab === "community"
+                ? "아직 열람한 커뮤니티 글이 없어요."
+                : "아직 작성한 글이 없어요."
           }
           interactionMode="direct"
         />
