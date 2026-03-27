@@ -1,5 +1,8 @@
 export const PATHS = {
   HOME: "/",
+  LANDING_INSTA: "/insta",
+  LANDING_BLIND: "/blind",
+  LANDING_THREAD: "/thread",
   DIARY_ALL: "/diary",
   DIARY_LIST: "/diary/:type",
   DIARY_SUBMIT: "/diary/submit/:type",
