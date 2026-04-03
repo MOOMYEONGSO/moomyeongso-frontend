@@ -1,6 +1,6 @@
 type EventValue = string | number | boolean | null | undefined;
 type EventParams = Record<string, EventValue>;
-htype ConsentParams = {
+type ConsentParams = {
   analytics_storage: "granted";
   ad_storage: "denied";
   ad_user_data: "denied";
