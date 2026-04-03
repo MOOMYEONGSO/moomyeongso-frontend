@@ -1,5 +1,14 @@
 type EventValue = string | number | boolean | null | undefined;
 type EventParams = Record<string, EventValue>;
+type ConsentParams = {
+  analytics_storage: "granted";
+  ad_storage: "denied";
+  ad_user_data: "denied";
+  ad_personalization: "denied";
+  functionality_storage: "granted";
+  personalization_storage: "denied";
+  security_storage: "granted";
+};
 
 const GA_ID = (import.meta.env.VITE_GA_MEASUREMENT_ID ?? "").trim();
 
@@ -35,10 +44,27 @@ function ensureGtagScript(measurementId: string) {
   document.head.appendChild(script);
 }
 
+function buildConsentParams(): ConsentParams {
+  return {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    functionality_storage: "granted",
+    personalization_storage: "denied",
+    security_storage: "granted",
+  };
+}
+
+function initConsent() {
+  window.gtag?.("consent", "default", buildConsentParams());
+}
+
 export function initGa() {
   if (!GA_ID || gaConfigured) return;
 
   ensureGtag();
+  initConsent();
   ensureGtagScript(GA_ID);
 
   window.gtag?.("js", new Date());
