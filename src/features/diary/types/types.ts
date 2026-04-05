@@ -34,6 +34,7 @@ export type DiaryPreview = {
   tags: string[];
   likes?: number;
   views?: number;
+  commentCount?: number;
   createdAt?: string;
   type?: DiaryType;
 };
