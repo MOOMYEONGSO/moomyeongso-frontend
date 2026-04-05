@@ -16,7 +16,7 @@ function DetailContent({
   content,
   isLoading,
   createdLabel,
-  // type,
+  type,
   postId,
   comments = [],
 }: {
@@ -60,7 +60,7 @@ function DetailContent({
         )}
       </div>
 
-      {!isLoading && postId && (
+      {!isLoading && postId && type === "MOOMYEONGSO" && (
         <CommentSection postId={postId} comments={comments} />
       )}
 
