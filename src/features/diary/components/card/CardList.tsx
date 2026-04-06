@@ -28,6 +28,8 @@ const CardList = ({ diaries, onClickCard }: CardListProps) => {
               textCount={diary.contentLength}
               tags={diary.tags}
               views={diary.views}
+              type={diary.type}
+              commentCount={diary.commentCount}
             />
           </li>
         );

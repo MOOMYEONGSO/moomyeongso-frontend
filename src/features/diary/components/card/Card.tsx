@@ -3,17 +3,21 @@ import classes from "./Card.module.css";
 import Title from "../title/Title";
 // import Count from "../count/Count";
 import View from "../label/view/View";
+import CommentCount from "../label/commentCount/commentcount";
 import Tag from "../label/tag/Tag";
-import { getRandomOverlayUrl } from "../../utils/overlayImages";
+import { getRandomCardOverlayUrl } from "../../utils/overlayImages";
 import { CARD_TAG_LABEL } from "../../constants/diaryTags";
 import type { tags } from "../../types/tags";
+import type { DiaryType } from "../../types/types";
 
 type CardProps = ComponentPropsWithoutRef<"article"> & {
   title: string;
+  type?: DiaryType;
   tags?: string[];
   isAuthor?: boolean;
   textCount: number;
   views?: number;
+  commentCount?: number;
 };
 
 const Card = ({
@@ -22,12 +26,14 @@ const Card = ({
   isAuthor,
   className,
   tags,
+  type,
   views = 0,
+  commentCount,
   ...props
 }: CardProps) => {
   const authorType = isAuthor ? "self" : "other";
 
-  const randomOverlay = useMemo(() => getRandomOverlayUrl(), [title]);
+  const randomOverlay = useMemo(() => getRandomCardOverlayUrl(), [title]);
 
   return (
     <article
@@ -46,6 +52,9 @@ const Card = ({
             })}
           </div>
           <div className={classes.metaRight}>
+            {type === "MOOMYEONGSO" && commentCount !== undefined && (
+              <CommentCount>{commentCount}</CommentCount>
+            )}
             <View>{views}</View>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { useDiaries } from "../hooks/useDiaries";
 import classes from "./DiaryListPage.module.css";
-import type { UiType } from "../types/typeMap";
+import { type UiType } from "../types/typeMap";
 import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 
@@ -11,9 +11,9 @@ function DiaryListPage() {
   const { type } = useParams<{ type?: UiType }>();
 
   // TODO: 서버 조회 타입 정책 확정 후 daily/mind -> DIARY 임시 매핑 정리하기.
-  let apiType: "DIARY" | "TODAY" | "SHORT" | "LONG" | undefined;
-  if (type === "daily") {
-    apiType = "DIARY";
+  let apiType: "DIARY" | "MOOMYEONGSO" | "TODAY" | undefined;
+  if (type === "public") {
+    apiType = "MOOMYEONGSO";
   } else if (type === "mind") {
     apiType = "DIARY";
   } else if (type === "today") {

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type { DiaryDetail } from "../../diary/types/types";
+import type { AdminPostResponse } from "../types/adminPost";
 import { adminDiaryApi } from "../../diary/api/diary.admin";
 
 export function useAdminDiary(id?: string) {
-  return useQuery<DiaryDetail>({
+  return useQuery<AdminPostResponse>({
     queryKey: ["admin", "diary", "detail", id],
     queryFn: () => adminDiaryApi.getById(id as string),
     enabled: !!id,

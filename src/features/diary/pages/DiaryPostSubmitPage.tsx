@@ -27,7 +27,7 @@ function DiaryPostSubmitPage() {
   const state = (location.state || {}) as State;
 
   const { type: urlTypeParam } = useParams<{ type: UiType }>();
-  const routeType = urlTypeParam ?? state.type ?? "daily";
+  const routeType = urlTypeParam ?? state.type ?? "public";
 
   const stayMs = state.stayMs ?? 1600;
   const message = state.message ?? SUBMIT_LOADING_MESSAGE;
@@ -55,7 +55,14 @@ function DiaryPostSubmitPage() {
       }
     }, stayMs);
     return () => clearTimeout(t);
-  }, [nav, routeType, stayMs, state.showCalendar, state.streakState, state.tags]);
+  }, [
+    nav,
+    routeType,
+    stayMs,
+    state.showCalendar,
+    state.streakState,
+    state.tags,
+  ]);
 
   return (
     <main
