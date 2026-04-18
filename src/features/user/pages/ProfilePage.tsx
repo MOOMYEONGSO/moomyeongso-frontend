@@ -49,8 +49,10 @@ function ProfilePage() {
     "read",
     currentTab === "read",
   );
-  const { data: communityData, isLoading: isCommunityLoading } =
-    useReadDiaries("community", currentTab === "community");
+  const { data: communityData, isLoading: isCommunityLoading } = useReadDiaries(
+    "community",
+    currentTab === "community",
+  );
   const { data: writtenData, isLoading: isWrittenLoading } =
     useWrittenDiaries();
 
@@ -83,13 +85,13 @@ function ProfilePage() {
     showToast("준비 중인 기능입니다.", "info");
   }
 
-  function handleCoinClick() {
-    if (!me?.coin) {
-      showToast("열람권이 없어요! 글을 작성하고 열람권을 받아보세요.", "info");
-    } else {
-      navigate(PATHS.DIARY_ALL);
-    }
-  }
+  // function handleCoinClick() {
+  //   if (!me?.coin) {
+  //     showToast("열람권이 없어요! 글을 작성하고 열람권을 받아보세요.", "info");
+  //   } else {
+  //     navigate(PATHS.DIARY_ALL);
+  //   }
+  // }
 
   return (
     <section className={classes.profile}>
@@ -99,7 +101,7 @@ function ProfilePage() {
         ) : (
           <>
             <UserInfo nickname={me.nickname} />
-            <CoinInfo coin={me.coin} onClick={handleCoinClick} />
+            <CoinInfo coin={me.coin} />
             <Button alwaysHoverStyle onClick={handleProfileEditClick}>
               프로필 편집
             </Button>
