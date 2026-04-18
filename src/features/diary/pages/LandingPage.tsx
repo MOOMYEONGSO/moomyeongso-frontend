@@ -1,26 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Text from "../../../components/text/Text";
 import Button from "../../../components/button/Button";
 import classes from "./LandingPage.module.css";
 import { PATHS } from "../../../constants/path";
-import { useEnsureSession } from "../../auth/hooks/useEnsureSession";
+import { isAuthenticatedUser } from "../../auth/api/tokenStore";
 import Paragraph from "../../../components/paragraph/Paragraph";
 import TypeCard from "../components/card/TypeCard";
 
 function LandingPage() {
   const [step, setStep] = useState(0);
-  const { ensure, ensuring } = useEnsureSession(false);
+  const navigate = useNavigate();
 
-  const handleClick = async () => {
-    setStep(1);
-    try {
-      await ensure();
-      setStep(2);
-    } catch (e) {
-      console.error("세션 확보 실패:", e);
-      setStep(0);
+  const handleClick = () => {
+    if (!isAuthenticatedUser()) {
+      navigate(PATHS.LOGIN);
+      return;
     }
+
+    setStep(1);
+    setTimeout(() => {
+      setStep(2);
+    }, 400);
   };
 
   useEffect(() => {
@@ -43,12 +44,7 @@ function LandingPage() {
             <Text variant="t1">어디에도 하지 못한 말을</Text>
             <Text variant="t1">이곳 무명소에 흘려보내세요.</Text>
           </div>
-          <Button
-            revealOnMount
-            revealDelay={400}
-            onClick={handleClick}
-            disabled={ensuring}
-          >
+          <Button revealOnMount revealDelay={400} onClick={handleClick}>
             익명의 기록을 시작합니다
           </Button>
         </div>
