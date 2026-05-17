@@ -52,16 +52,17 @@ export function useSignup(opts: CommonOpts = {}): UseMutationResult<
   });
 }
 
-export function useAnonymousLogin(opts: CommonOpts = {}) {
-  return useMutation<AuthResponse, unknown, void>({
-    mutationFn: () => authApi.anonymousLogin(),
-    onSuccess: (data) => {
-      persistAuth(data);
-      opts.onSuccess?.(data);
-    },
-    onError: (err) => opts.onError?.(err),
-  });
-}
+// 익명 로그인 비활성화
+// export function useAnonymousLogin(opts: CommonOpts = {}) {
+//   return useMutation<AuthResponse, unknown, void>({
+//     mutationFn: () => authApi.anonymousLogin(),
+//     onSuccess: (data) => {
+//       persistAuth(data);
+//       opts.onSuccess?.(data);
+//     },
+//     onError: (err) => opts.onError?.(err),
+//   });
+// }
 
 export function useLogout(): UseMutationResult<void, unknown, void> {
   return useMutation({

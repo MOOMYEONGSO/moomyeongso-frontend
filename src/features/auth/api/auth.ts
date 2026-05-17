@@ -28,10 +28,11 @@ export const authApi = {
     return unwrap<AuthResponse>(res);
   },
 
-  async anonymousLogin(): Promise<AuthResponse> {
-    const res = await client.post<ApiResponse<AuthResponse>>("/auth/anonymous");
-    return unwrap<AuthResponse>(res);
-  },
+  // 익명 로그인 비활성화
+  // async anonymousLogin(): Promise<AuthResponse> {
+  //   const res = await client.post<ApiResponse<AuthResponse>>("/auth/anonymous");
+  //   return unwrap<AuthResponse>(res);
+  // },
   async logout(): Promise<void> {
     const res = await client.post("/auth/logout", null, {
       headers: { "x-skip-reissue": true },
