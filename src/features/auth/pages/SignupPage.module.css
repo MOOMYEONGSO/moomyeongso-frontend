@@ -35,7 +35,10 @@
   visibility: hidden;
   pointer-events: none;
 
-  transition: opacity 200ms ease, transform 200ms ease, max-height 200ms ease,
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    max-height 200ms ease,
     visibility 0s linear 200ms;
 }
 
@@ -46,7 +49,10 @@
   visibility: visible;
   pointer-events: auto;
 
-  transition: opacity 200ms ease, transform 200ms ease, max-height 200ms ease;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    max-height 200ms ease;
 }
 
 .btn {
@@ -55,4 +61,29 @@
 
 .btn > * {
   min-width: 0;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between; /* 이전 버튼은 왼쪽, 닫기 버튼은 오른쪽으로 배치 */
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--color-gray-2, #888);
+  cursor: pointer;
+  padding: 0.5rem; /* 클릭 영역 확보 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.iconBtn:hover {
+  color: var(--color-gray-1, #333);
 }

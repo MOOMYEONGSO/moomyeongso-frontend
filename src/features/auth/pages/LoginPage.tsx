@@ -45,7 +45,7 @@ function LoginPage() {
 
   const emailIssues = useMemo(
     () => validateEmail(trimmedEmail),
-    [trimmedEmail]
+    [trimmedEmail],
   );
   const emailValid = !hasError(emailIssues);
   const emailError = firstError(emailIssues);
@@ -160,7 +160,7 @@ function LoginPage() {
           />
           {showEmailError ? (
             <InputMessage type="error" aria-live="polite">
-              {emailError ?? "올바른 이메일 형식을 입력해주세요"}
+              {emailError}
             </InputMessage>
           ) : (
             <InputMessage />
@@ -176,7 +176,8 @@ function LoginPage() {
           <Input
             ref={passwordRef}
             type="password"
-            placeholder="비밀번호 (영문, 숫자 포함 8-15자)"
+            maxLength={4}
+            placeholder="비밀번호 (영문, 숫자 포함 4자리)"
             value={password}
             onChange={(e) => {
               if (serverError) setServerError("");

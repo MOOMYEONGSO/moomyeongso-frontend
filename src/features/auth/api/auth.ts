@@ -3,6 +3,7 @@ import type { AuthResponse } from "../types/types";
 import client from "../../../api/client";
 import { unwrap } from "../../../api/helpers";
 import { getAccessToken, getRefreshToken, persistAuth } from "./tokenStore";
+import type { VisitMotive } from "../constants/signup";
 
 export const authApi = {
   async login(email: string, password: string): Promise<AuthResponse> {
@@ -13,11 +14,16 @@ export const authApi = {
     return unwrap<AuthResponse>(res);
   },
 
-  async signup(email: string, password: string): Promise<AuthResponse> {
-    const res = await client.post<ApiResponse<AuthResponse>>("/auth/signup", {
-      email,
-      password,
-    });
+  async signup(payload: {
+    visitMotive: VisitMotive;
+    nickname: string;
+    email: string;
+    password: string;
+  }): Promise<AuthResponse> {
+    const res = await client.post<ApiResponse<AuthResponse>>(
+      "/auth/signup",
+      payload,
+    );
 
     return unwrap<AuthResponse>(res);
   },
