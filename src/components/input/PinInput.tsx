@@ -56,6 +56,7 @@ const PinInput = forwardRef<HTMLInputElement, PinInputProps>(
               value={value[i] || ""}
               onChange={(e) => handleChange(i, e.target.value)}
               onKeyDown={(e) => handleKeyDown(i, e)}
+              autoComplete="new-password"
             />
           ))}
         </div>
