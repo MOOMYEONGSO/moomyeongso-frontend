@@ -13,6 +13,7 @@ import InputMessage from "../../../components/input/InputMessage";
 import LoadingDots from "../../../components/loading/LoadingDots";
 import { validateEmail } from "../validation/validators";
 import { firstError, hasError } from "../validation/validationHelpers";
+import PinInput from "../../../components/input/PinInput";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -173,19 +174,15 @@ function LoginPage() {
           }`}
           aria-hidden={step !== "password"}
         >
-          <Input
+          <PinInput
             ref={passwordRef}
-            type="password"
-            maxLength={4}
-            placeholder="비밀번호 (영문, 숫자 포함 4자리)"
             value={password}
-            onChange={(e) => {
+            onChange={(val) => {
               if (serverError) setServerError("");
-              setPassword(e.target.value);
+              setPassword(val);
               setPwTried(false); // 입력 재시작 시 에러 숨김
             }}
             onKeyDown={handlePwKeyDown}
-            autoComplete="current-password"
             aria-invalid={!!showPwError}
           />
           {showPwError ? (
