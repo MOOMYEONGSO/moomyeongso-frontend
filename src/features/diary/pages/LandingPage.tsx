@@ -15,8 +15,8 @@ function LandingPage() {
   const handleClick = async () => {
     setStep(1);
     try {
-      await ensure();
-      setStep(2);
+      const ok = await ensure();
+      if (ok) setStep(2);
     } catch (e) {
       console.error("세션 확보 실패:", e);
       setStep(0);
@@ -49,7 +49,7 @@ function LandingPage() {
             onClick={handleClick}
             disabled={ensuring}
           >
-            익명의 기록을 시작합니다
+            입장
           </Button>
         </div>
       )}

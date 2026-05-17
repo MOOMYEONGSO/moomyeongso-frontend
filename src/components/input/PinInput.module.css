@@ -1,0 +1,38 @@
+.wrapper {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pinBox {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 5.6rem;
+  background-color: var(--color-gray-4);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--color-gray-2);
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.pinBox:focus {
+  outline: none;
+  border-color: var(--color-caret);
+}
+
+.pinBox.error {
+  border: 0.5px solid var(--color-red);
+}
