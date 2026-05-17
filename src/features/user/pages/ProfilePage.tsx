@@ -49,8 +49,10 @@ function ProfilePage() {
     "read",
     currentTab === "read",
   );
-  const { data: communityData, isLoading: isCommunityLoading } =
-    useReadDiaries("community", currentTab === "community");
+  const { data: communityData, isLoading: isCommunityLoading } = useReadDiaries(
+    "community",
+    currentTab === "community",
+  );
   const { data: writtenData, isLoading: isWrittenLoading } =
     useWrittenDiaries();
 
@@ -74,7 +76,8 @@ function ProfilePage() {
   function handleLogout() {
     logout(undefined, {
       onSettled: () => {
-        navigate(PATHS.HOME);
+        //브라우저 레벨에서 홈으로 즉시 새로고침하여 앱 상태를 완전히 초기화
+        window.location.replace(PATHS.HOME);
       },
     });
   }
