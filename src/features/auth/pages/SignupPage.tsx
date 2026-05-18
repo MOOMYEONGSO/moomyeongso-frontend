@@ -19,6 +19,7 @@ import Button from "../../../components/button/Button";
 import LoadingDots from "../../../components/loading/LoadingDots";
 import { VISIT_MOTIVES, type VisitMotive } from "../constants/signup";
 import PinInput from "../../../components/input/PinInput";
+import { getSignupCompleteLetter } from "../constants/messages";
 
 type Step = "visitMotive" | "nickname" | "pw" | "pwc" | "email" | "complete";
 
@@ -231,7 +232,7 @@ function SignupPage() {
       case "email":
         return "편지 받을 이메일";
       case "complete":
-        return "무명소에 오신 것을 환영합니다";
+        return "무명소의 시작, 진심을 담아 전합니다.";
       default:
         return "회원가입";
     }
@@ -411,14 +412,14 @@ function SignupPage() {
               style={{
                 textAlign: "center",
                 lineHeight: "1.8",
-                color: "var(--color-gray-1, #333)",
+                color: "var(--color-gray-700, #4a4a4a)",
                 marginTop: "2rem",
                 marginBottom: "2rem",
                 whiteSpace: "pre-wrap",
                 fontSize: "1rem",
               }}
             >
-              {`이제 당신의 이야기를\n흘려보낼 준비가 되었습니다.\n\n작성해주신 이메일로 가끔\n무명소의 편지가 도착할지도 모릅니다.`}
+              {getSignupCompleteLetter(nickname)}
             </div>
           </div>
         )}
