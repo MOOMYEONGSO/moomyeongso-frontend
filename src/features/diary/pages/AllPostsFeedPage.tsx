@@ -294,7 +294,6 @@ const AllPostsFeedPage: React.FC = () => {
                 title={post.title}
                 type={post.type}
                 tags={post.tags}
-                textCount={post.contentLength}
                 views={post.views}
                 commentCount={post.commentCount}
                 isAuthor={false}

@@ -25,7 +25,6 @@ const CardList = ({ diaries, onClickCard }: CardListProps) => {
               onClick={() => onClickCard(diary.postId)}
               title={diary.title}
               isAuthor={isAuthor}
-              textCount={diary.contentLength}
               tags={diary.tags}
               views={diary.views}
               type={diary.type}
