@@ -169,22 +169,22 @@ const AllPostsFeedPage: React.FC = () => {
         const viewW = window.innerWidth;
         const viewH = window.innerHeight;
 
-        // 현재 배치된 카드들의 대략적인 최대 반경 계산 (여유분으로 0.5칸 추가)
-        const maxColRow = Math.ceil(Math.sqrt(postsCountRef.current) / 2) + 0.5;
-        const maxRadiusX = maxColRow * CELL_W;
-        const maxRadiusY = maxColRow * CELL_H;
+        // 현재 배치된 카드들의 가장 바깥쪽 반경(Radius) 계산
+        const maxR = Math.ceil((Math.sqrt(postsCountRef.current) - 1) / 2);
+        const maxRadiusX = maxR * CELL_W;
+        const maxRadiusY = maxR * CELL_H;
 
-        // 현재 뷰포트의 중앙 좌표 계산
-        let cx = nextX + viewW / 2;
-        let cy = nextY + viewH / 2;
+        // 현재 뷰포트의 중앙 좌표 계산 (0,0 카드의 중심을 기준으로 보정)
+        let cx = nextX + viewW / 2 - CELL_W / 2;
+        let cy = nextY + viewH / 2 - CELL_H / 2;
 
         // 캔버스의 끝을 벗어나지 않도록 중앙 좌표를 제한
         cx = Math.max(-maxRadiusX, Math.min(maxRadiusX, cx));
         cy = Math.max(-maxRadiusY, Math.min(maxRadiusY, cy));
 
         // 제한된 중앙 좌표를 다시 좌상단 타겟 좌표로 변환
-        nextX = cx - viewW / 2;
-        nextY = cy - viewH / 2;
+        nextX = cx - viewW / 2 + CELL_W / 2;
+        nextY = cy - viewH / 2 + CELL_H / 2;
       }
 
       target.current.x = nextX;
@@ -262,6 +262,8 @@ const AllPostsFeedPage: React.FC = () => {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onPointerLeave={onPointerUp}
+        onDragStart={(e) => e.preventDefault()} // 브라우저 기본 드래그(잔상)가 이벤트를 삼키는 것 원천 차단
       >
         <div className={classes.canvas} ref={canvasRef}>
           {visiblePosts.map(({ post, col, row }) => (

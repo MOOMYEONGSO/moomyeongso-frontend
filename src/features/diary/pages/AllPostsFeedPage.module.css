@@ -53,7 +53,7 @@
 }
 
 .returnButton {
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 2rem;
   background: #333;
@@ -61,7 +61,7 @@
   padding: 0.8rem 1.5rem;
   border-radius: 30px;
   font-size: 0.95rem;
-  z-index: 100;
+  z-index: 999;
   cursor: pointer;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
