@@ -235,7 +235,7 @@ const AllPostsFeedPage: React.FC = () => {
     setTarget(target.current.x - dx, target.current.y - dy);
   };
 
-  const onPointerUp = (e: React.PointerEvent) => {
+  const onPointerUp = () => {
     isDragging.current = false;
   };
 
