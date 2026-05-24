@@ -13,7 +13,7 @@ function DiaryRerollPage() {
   const { type } = useParams<{ type?: UiType }>();
   const navigate = useNavigate();
   const { state } = useLocation() as { state?: { tags?: string[] } };
-  const routeType = type ?? "public";
+  // const routeType = type ?? "public";
   const tags = Array.isArray(state?.tags)
     ? state.tags.filter((tag): tag is string => typeof tag === "string")
     : [];
@@ -89,9 +89,7 @@ function DiaryRerollPage() {
               variant="main"
               state="active"
               className={classes.allPostsButton}
-              onClick={() =>
-                navigate(PATHS.DIARY_LIST_TYPE(routeType), { replace: true })
-              }
+              onClick={() => navigate(PATHS.DIARY_ALL, { replace: true })}
             >
               전체 포스트 받기
             </Button>

@@ -19,6 +19,7 @@ import DiaryStreakPage from "../features/diary/pages/DiaryStreakPage";
 import AdminDiaryListPage from "../features/admin/pages/diary/AdminDiaryListPage";
 import AdminDiaryDetailPage from "../features/admin/pages/diary/AdminDiaryDetailPage";
 import DiaryRerollPage from "../features/diary/pages/DiaryRerollPage";
+import AllPostsFeedPage from "../features/diary/pages/AllPostsFeedPage";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,9 @@ const router = createBrowserRouter([
         element: <DiaryRerollPage />,
       },
 
-      { path: PATHS.DIARY_ALL, element: <DiaryListPage /> },
+      // ₩TODO: 전체 포스트 피드 페이지 추가 (임시로 DiaryListPage 대신 AllPostsFeedPage 사용)
+      // { path: PATHS.DIARY_ALL, element: <DiaryListPage /> },
+      { path: PATHS.DIARY_ALL, element: <AllPostsFeedPage /> },
       { path: PATHS.DIARY_LIST, element: <DiaryListPage /> },
       { path: PATHS.DIARY_DETAIL, element: <DiaryDetailPage /> },
       { path: PATHS.LOGIN, element: <LoginPage /> },

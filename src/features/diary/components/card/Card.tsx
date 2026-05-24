@@ -15,14 +15,12 @@ type CardProps = ComponentPropsWithoutRef<"article"> & {
   type?: DiaryType;
   tags?: string[];
   isAuthor?: boolean;
-  textCount: number;
   views?: number;
   commentCount?: number;
 };
 
 const Card = ({
   title,
-  // textCount,
   isAuthor,
   className,
   tags,
@@ -59,9 +57,6 @@ const Card = ({
           </div>
         </div>
       </div>
-      {/* <div>
-        <Count className={classes.count}>{textCount}</Count>
-      </div> */}
 
       {randomOverlay && (
         <img src={randomOverlay} alt="" className={classes.overlayImage} />
