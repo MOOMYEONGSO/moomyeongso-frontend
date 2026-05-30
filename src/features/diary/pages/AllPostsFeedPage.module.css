@@ -1,8 +1,9 @@
 .container {
   position: absolute;
+  top: var(--header-height);
   left: 0;
   right: 0;
-  height: calc(100vh - 64px);
+  height: calc(100vh - var(--header-height));
   min-height: 600px;
   overflow: hidden;
   touch-action: none;
