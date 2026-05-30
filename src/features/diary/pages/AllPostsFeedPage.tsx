@@ -10,6 +10,7 @@ import Button from "../../../components/button/Button";
 
 const CELL_W = 400; // 카드의 가로 공간 (Card 크기에 맞춰 확장)
 const CELL_H = 420; // 카드의 세로 공간 (Card 크기에 맞춰 확장)
+const PREFETCH_RINGS = 2; // 최외곽 링에서 N링 이내 접근 시 다음 페이지 선제 로드
 
 // (col, row) 좌표를 생성하는 바둑판 스파이럴(Spiral) 알고리즘
 const getGridCoordinates = (index: number) => {
@@ -63,13 +64,15 @@ const AllPostsFeedPage: React.FC = () => {
     }
   }, [coin, isConfirmOpen]);
 
-  // 무한 스크롤(커서) 상태 관리 Refs (비동기 루프에서 접근하기 위함)
-  const isLoadingRef = useRef(false);
+  // setTarget의 clamp 계산에서 최신 값 접근을 위한 Refs
   const postsCountRef = useRef(0);
-  isLoadingRef.current = isFetchingNextPage || isLoading;
   const hasNextPageRef = useRef(false);
-  hasNextPageRef.current = !!hasNextPage; // 👈 리렌더링마다 최신 값으로 업데이트
+  hasNextPageRef.current = !!hasNextPage;
   postsCountRef.current = posts.length;
+
+  // 뷰포트 링 추적 (데이터 페칭 트리거용)
+  const [viewportRing, setViewportRing] = useState(0);
+  const lastRingRef = useRef(0);
 
   // 무한 캔버스 카메라 위치 (가상 좌표)
   const target = useRef({ x: 0, y: 0 }); // 목표 위치
@@ -91,8 +94,8 @@ const AllPostsFeedPage: React.FC = () => {
 
   const updateRange = useCallback(
     (x: number, y: number) => {
-      const viewW = window.innerWidth;
-      const viewH = window.innerHeight;
+      const viewW = containerRef.current?.clientWidth ?? window.innerWidth;
+      const viewH = containerRef.current?.clientHeight ?? window.innerHeight;
 
       // 현재 보여지는 화면 + 양옆 위아래로 1칸씩 여유분을 렌더링 범위로 잡음
       const minCol = Math.floor(x / CELL_W) - 1;
@@ -112,26 +115,8 @@ const AllPostsFeedPage: React.FC = () => {
         return { minCol, maxCol, minRow, maxRow };
       });
 
-      // 사용자가 가장자리에 접근했는지 계산 (무한 캔버스 로딩 트리거)
-      const distFromCenter = Math.max(
-        Math.abs(x + viewW / 2),
-        Math.abs(y + viewH / 2),
-      );
-      const currentMaxRadius =
-        (Math.sqrt(postsCountRef.current) / 2) * Math.min(CELL_W, CELL_H);
-
-      // 캔버스 가장자리에 가까워지면(여유분 1000px) 다음 페이지 로드
-      if (distFromCenter + Math.max(viewW, viewH) > currentMaxRadius - 1000) {
-        if (!isLoadingRef.current && hasNextPageRef.current) {
-          isLoadingRef.current = true; // 👈 API 중복 호출(스팸) 방지를 위해 즉시 잠금
-          console.log(
-            `[스크롤 감지] 가로/세로 가장자리 접근 (거리: ${Math.round(distFromCenter)}, 최대 반경: ${Math.round(currentMaxRadius)}) -> 확장 요청`,
-          );
-          fetchNextPage();
-        }
-      }
     },
-    [fetchNextPage],
+    [],
   );
 
   const tick = useCallback(() => {
@@ -147,6 +132,16 @@ const AllPostsFeedPage: React.FC = () => {
     }
 
     updateRange(current.current.x, current.current.y);
+
+    // 뷰포트 링 감지 — 링 경계를 넘을 때만 state 업데이트 (rAF 매 프레임 setState 방지)
+    const ringNow = Math.max(
+      Math.abs(Math.round(current.current.x / CELL_W)),
+      Math.abs(Math.round(current.current.y / CELL_H)),
+    );
+    if (ringNow !== lastRingRef.current) {
+      lastRingRef.current = ringNow;
+      setViewportRing(ringNow);
+    }
 
     // 목표지점에 거의 도달하면 애니메이션 중지
     if (
@@ -166,8 +161,8 @@ const AllPostsFeedPage: React.FC = () => {
 
       // 더 이상 불러올 카드가 없을 때 캔버스 밖으로 스크롤되는 것을 제한(Clamp)
       if (!hasNextPageRef.current && postsCountRef.current > 0) {
-        const viewW = window.innerWidth;
-        const viewH = window.innerHeight;
+        const viewW = containerRef.current?.clientWidth ?? window.innerWidth;
+        const viewH = containerRef.current?.clientHeight ?? window.innerHeight;
 
         // 현재 배치된 카드들의 가장 바깥쪽 반경(Radius) 계산
         const maxR = Math.ceil((Math.sqrt(postsCountRef.current) - 1) / 2);
@@ -199,8 +194,10 @@ const AllPostsFeedPage: React.FC = () => {
 
   useEffect(() => {
     // 초기 중앙 정렬 (카드가 화면 중앙에 오도록)
-    const startX = -(window.innerWidth / 2) + CELL_W / 2;
-    const startY = -(window.innerHeight / 2) + CELL_H / 2;
+    const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
+    const containerH = containerRef.current?.clientHeight ?? window.innerHeight;
+    const startX = -(containerW / 2) + CELL_W / 2;
+    const startY = -(containerH / 2) + CELL_H / 2;
     setTarget(startX, startY);
 
     // 트랙패드/마우스 휠 패닝 이벤트
@@ -213,10 +210,21 @@ const AllPostsFeedPage: React.FC = () => {
     return () => el?.removeEventListener("wheel", handleWheel);
   }, [setTarget]);
 
+  // 데이터 페칭 트리거 — 뷰포트 링이 최외곽 링에 가까워지면 다음 페이지 요청
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+    const outerRing = Math.max(0, Math.floor((Math.sqrt(posts.length) - 1) / 2));
+    if (outerRing - viewportRing <= PREFETCH_RINGS) {
+      fetchNextPage();
+    }
+  }, [viewportRing, hasNextPage, isFetchingNextPage, posts.length, fetchNextPage]);
+
   // 처음(중앙) 위치로 돌아오는 핸들러
   const handleReturnToCenter = useCallback(() => {
-    const startX = -(window.innerWidth / 2) + CELL_W / 2;
-    const startY = -(window.innerHeight / 2) + CELL_H / 2;
+    const containerW = containerRef.current?.clientWidth ?? window.innerWidth;
+    const containerH = containerRef.current?.clientHeight ?? window.innerHeight;
+    const startX = -(containerW / 2) + CELL_W / 2;
+    const startY = -(containerH / 2) + CELL_H / 2;
     setTarget(startX, startY);
   }, [setTarget]);
 
