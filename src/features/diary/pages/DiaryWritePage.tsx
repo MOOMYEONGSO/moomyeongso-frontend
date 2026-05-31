@@ -1,7 +1,5 @@
 import { useRef, useState, useEffect, type ChangeEvent } from "react";
 import Form, { type FormHandle } from "../../../components/form/Form";
-import TextArea from "../../../components/textarea/TextArea";
-import TextCount from "../components/text/TextCount";
 import textAreaClasses from "../../../components/textarea/TextArea.module.css";
 import classes from "./DiaryWritePage.module.css";
 import Button from "../../../components/button/Button";
@@ -21,28 +19,40 @@ import { useTopic } from "../hooks/useTopic";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 import TagButton from "../components/tag/TagButton";
 import { DIARY_TAGS } from "../constants/diaryTags";
+import RichEditor from "../components/editor/RichEditor";
 
 const FORM_ID = "diary-form";
 const SHORT_MIN_LENGTH = 30;
 const LONG_MIN_LENGTH = 100;
 
-const isContentValid = (s: string, minLength: number) =>
-  s.length >= minLength && s.trim().length > 0;
+const isContentValid = (textLength: number, minLength: number) =>
+  textLength >= minLength;
+
+function useCurrentTime() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
 
 function DiaryWritePage() {
   const formRef = useRef<FormHandle>(null);
   const containerRef = useRef<HTMLElement>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
-
   const [count, setCount] = useState(0);
+  const [title, setTitle] = useState("");
+  const [loaded, setLoaded] = useState(false);
+
   const [showConfirm, setShowConfirm] = useState(false);
   const [showTagSelect, setShowTagSelect] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const now = useCurrentTime();
 
   const { type } = useParams<{ type: UiType }>();
   const diaryType: ApiType =
@@ -51,30 +61,13 @@ function DiaryWritePage() {
   const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
-  // TODO: postType "DIARY" 로 임시 조치 해제
   const createType = diaryType;
-  // const createType = diaryType === "MOOMYEONGSO" || diaryType === "TODAY" ? "DIARY" : diaryType;
 
-  // 오늘의 주제 글인 경우, 주제 API 호출
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
 
   const MIN_LENGTH = diaryType === "DIARY" ? LONG_MIN_LENGTH : SHORT_MIN_LENGTH;
 
-  //
   const parsedTags = tags;
-
-  //태그 숫자 제한 및 파싱
-  /* const MAX_TAGS = 10;
-
-  const parsedTags = Array.from(
-    new Set(
-      tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-    ),
-  ).slice(0, MAX_TAGS);
-  */
 
   const TITLE = isToday
     ? topicLoading
@@ -90,19 +83,16 @@ function DiaryWritePage() {
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
       : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
 
-  // API 호출
   const { mutateAsync } = useCreateDiary(createType, {
     onSuccess: (data) => {
       formRef.current?.clear();
       setTitle("");
       setContent("");
-      setTags([]);
       setCount(0);
+      setTags([]);
       localStorage.removeItem(DRAFT_KEY);
 
       const typeLower = API_TO_UI[diaryType];
-
-      // 제출 완료 페이지로 이동
       navigate(PATHS.DIARY_SUBMIT_TYPE(typeLower), {
         replace: true,
         state: {
@@ -125,6 +115,7 @@ function DiaryWritePage() {
     },
   });
 
+  // 초안 불러오기 — RichEditor가 올바른 initialValue로 마운트되도록 먼저 상태를 채운 후 렌더링
   useEffect(() => {
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
@@ -136,7 +127,6 @@ function DiaryWritePage() {
           }
           if ("content" in parsed && typeof parsed.content === "string") {
             setContent(parsed.content);
-            setCount(parsed.content.length);
           }
           if ("tags" in parsed && Array.isArray(parsed.tags)) {
             setTags(parsed.tags);
@@ -146,12 +136,12 @@ function DiaryWritePage() {
     } catch {
       // ignore
     }
+    setLoaded(true);
   }, [DRAFT_KEY]);
 
-  // ==============================
-  // 임시 저장 (입력 중 자동 저장)
-  // ==============================
+  // 자동 임시저장
   useEffect(() => {
+    if (!loaded) return;
     const id = setTimeout(() => {
       try {
         localStorage.setItem(
@@ -163,11 +153,10 @@ function DiaryWritePage() {
       }
     }, 350);
     return () => clearTimeout(id);
-  }, [title, content, tags, DRAFT_KEY]);
+  }, [title, content, tags, DRAFT_KEY, loaded]);
 
-  const canSubmit = isContentValid(content, MIN_LENGTH);
+  const canSubmit = isContentValid(count, MIN_LENGTH);
 
-  // 최종 저장 핸들러
   async function handleSave() {
     if (submitting) return;
 
@@ -196,11 +185,7 @@ function DiaryWritePage() {
     setShowTagSelect(true);
   }
 
-  function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    const val = e.target.value;
-    setContent(val);
-    setCount(val.length);
-  }
+  const formattedTime = `지금은 ${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, "0")}월 ${String(now.getDate()).padStart(2, "0")}일 ${String(now.getHours()).padStart(2, "0")}시${String(now.getMinutes()).padStart(2, "0")}분 입니다.`;
 
   return (
     <section className={classes.write} ref={containerRef}>
@@ -214,37 +199,38 @@ function DiaryWritePage() {
       <h2 className={classes.title}>{TITLE}</h2>
 
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>
-        <TextArea
-          name="content"
-          value={content}
-          onChange={handleTextChange}
-          disabled={submitting}
-          required
-          aria-describedby="submit-title"
-          placeholder={PLACEHOLDER_MESSAGE}
-        />
+        {loaded && (
+          <RichEditor
+            key={DRAFT_KEY}
+            initialValue={content}
+            onChange={(html, textLength) => {
+              setContent(html);
+              setCount(textLength);
+            }}
+            placeholder={PLACEHOLDER_MESSAGE}
+            disabled={submitting || showTagSelect || showConfirm}
+          />
+        )}
 
         <div className={classes.footer}>
+          <span className={classes.timeDisplay}>{formattedTime}</span>
+          <span className={classes.charCount}>{count} 자</span>
           <div
             className={classes.revealWrap}
             data-ready={canSubmit}
-            aria-hidden={!canSubmit && count === 0}
           >
             <Button
               type="button"
               onClick={handleOpenConfirm}
               disabled={submitting || !canSubmit}
             >
-              {submitting ? "보관 중..." : "무명소에 흘려보내기"}
+              {submitting ? "보관 중..." : "작성 완료"}
             </Button>
-          </div>
-
-          <div className={classes.countWrap}>
-            <TextCount count={count} reqLength={MIN_LENGTH} />
           </div>
         </div>
       </Form>
 
+      {/* 태그 선택 모달 */}
       <Modal isOpen={showTagSelect} onClose={() => setShowTagSelect(false)}>
         <Modal.Title>작성한 이야기는 어떠한 내용인가요?</Modal.Title>
         <div className={classes.tagContainer}>
@@ -295,6 +281,7 @@ function DiaryWritePage() {
         </Modal.Actions>
       </Modal>
 
+      {/* 제목 작성 모달 */}
       <Modal isOpen={showConfirm} onClose={() => setShowConfirm(false)}>
         <Modal.Title id="submit-title">작성하신 글을 정리해볼까요?</Modal.Title>
         <Modal.Textarea
@@ -308,15 +295,6 @@ function DiaryWritePage() {
           disabled={submitting}
           className={textAreaClasses.textarea}
         />
-        {/* <Modal.Textarea
-          name="tags"
-          placeholder="쉼표(,)로 구분하여 태그를 입력해주세요."
-          value={tags}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setTags(e.target.value)
-          }
-          disabled={submitting}
-        /> */}
         <Modal.Actions>
           <Button
             type="button"

@@ -28,6 +28,17 @@ html {
   --background-secondary-color: rgba(217, 217, 217, 0.04);
   --border-color: rgba(217, 217, 217, 0.08);
 
+  /* Palette - Primary */
+  --color-primary-100: #f5f3e6;
+  --color-primary-200: #ece8cd;
+  --color-primary-300: #c5c0a0;
+  --color-primary-400: #8c8769;
+  --color-primary-500: #403d2c;
+  --color-primary-600: #37321f;
+  --color-primary-700: #2e2916;
+  --color-primary-800: #25200d;
+  --color-primary-900: #1f1a07;
+
   /* Palette */
   --color-green: #556028;
   --color-yellow: #f2d899;
@@ -84,6 +95,7 @@ html {
 
   /* Effects */
   --blur-radius: 2px;
+  --border-radius: 0.2rem;
 
   /* Layers */
   --z-bg: 0;
